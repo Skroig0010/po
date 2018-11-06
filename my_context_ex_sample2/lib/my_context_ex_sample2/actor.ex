@@ -24,12 +24,12 @@ defmodule MyContextExSample2.Actor do
   end
 
   deflf loop() do
-    IO.inspect "2";
+    IO.inspect :loop_start
     receive do
       msg ->
         receive_msg(msg)
-        IO.inspect msg
     end
+    IO.inspect :loop_end
     loop()
   end
 
@@ -41,27 +41,27 @@ defmodule MyContextExSample2.Actor do
   end
 
   defp receive_msg(%Event{type: :thermometer, value: val}) when val <= 40 do 
-    IO.inspect 2
+    IO.inspect 1
     IO.inspect val
     Python.call(:"sense.set_pixel", [0, 0, val, 255, 255])
     cast_activate_layer(%{:temperature => :normal})
   end
 
   defp receive_msg(%Event{type: :smoke, value: val}) when val == true do
-    IO.inspect 3
+    IO.inspect 2
     IO.inspect val
     Python.call(:"sense.set_pixel", [0, 7, 255, 0, 255])
     cast_activate_layer(%{:smoke => true}) 
   end
 
   defp receive_msg(%Event{type: :smoke, value: val}) when val == false do 
-    IO.inspect 4
+    IO.inspect 3
     IO.inspect val
     Python.call(:"sense.set_pixel", [0, 7, 0, 255, 255])
     cast_activate_layer(%{:smoke => false})
   end
 
   defp receive_msg(_msg) do
-    IO.inspect 5
+    IO.inspect 4
   end
 end
