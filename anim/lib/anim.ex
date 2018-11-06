@@ -31,11 +31,12 @@ defmodule Anim do
   end
 
   def qubic(x) do
+    x = x * 2
     if x < 1 do
-      x * x * x
+      x * x * x / 2
     else 
       x = x - 2
-      x * x * x + 2
+      (x * x * x + 2) / 2
     end
   end
 end
