@@ -10,8 +10,8 @@ defmodule MyContextExSample2.Sensor.SmokeSensor do
       send pid, %Event{type: :smoke, value: hd(raw) > 40}
       :timer.sleep(1000)
       IO.inspect "smoke1";
-    rescue
-      e -> IO.puts "error: #{inspect e}"
+    catch
+      _, e -> IO.puts "error: #{inspect e}"
     end
     loop(pid)
   end
