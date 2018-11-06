@@ -2,7 +2,9 @@ defmodule MyContextExSample2.Actor do
   use ContextEX
 
   def start() do
+    IO.inspect "0";
     Python.init()
+    IO.inspect "1";
     init_context(:actor)
     loop()
   end
@@ -15,7 +17,6 @@ defmodule MyContextExSample2.Actor do
   end
 
   deflf loop(), %{:temperature => :high, :smoke => true} do
-    IO.inspect "called";
     Python.call(:"sense.show_message", ["fire"])
     cast_activate_group(:actor, %{:status => :emergency})
     :timer.sleep(1000)
@@ -23,6 +24,7 @@ defmodule MyContextExSample2.Actor do
   end
 
   deflf loop() do
+    IO.inspect "2";
     receive do
       msg ->
         receive_msg(msg)
