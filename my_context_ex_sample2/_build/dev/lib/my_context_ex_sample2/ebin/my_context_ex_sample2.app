@@ -1,0 +1,11 @@
+{application,my_context_ex_sample2,
+             [{applications,[kernel,stdlib,elixir,logger,router,contextEX,
+                             python]},
+              {description,"my_context_ex_sample2"},
+              {modules,['Elixir.Event','Elixir.MyContextExSample2',
+                        'Elixir.MyContextExSample2.Actor',
+                        'Elixir.MyContextExSample2.Sensor.SmokeSensor',
+                        'Elixir.MyContextExSample2.Sensor.Thermometer']},
+              {registered,[]},
+              {vsn,"0.1.0"},
+              {extra_applications,[logger]}]}.
