@@ -37,4 +37,5 @@ defmodule Anim do
       x = x - 2
       x * x * x + 2
     end
+  end
 end
