@@ -20,7 +20,7 @@ defmodule Anim do
   def loop(rad) do
     cells = Enum.flat_map(0..7, fn y ->
       Enum.map(0..7, fn x ->
-        case trunc(qubic(rem(trunc(rad * 10) + x, 20) / 10) * 8) do
+        case trunc(qubic(rem(trunc(rad * 10) + x, 20) / 10) * 5) do
           a when a <= y -> [trunc((:math.sin(rad) + 1.0) * 128), trunc((:math.sin(rad + 1) + 1.0) * 128), trunc((:math.sin(rad + 2) + 1.0) * 128)]
           a when a > y -> [0, 0, 0]
         end
