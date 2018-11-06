@@ -12,24 +12,26 @@ defmodule MyContextExSample2.Actor do
 
   deflf loop(), %{:status => :emergency} do
     Python.call(:"sense.show_message", ["emergency"])
-    :timer.sleep(1000)
+    :timer.sleep(200)
     loop()
   end
 
   deflf loop(), %{:temperature => :high, :smoke => true} do
     Python.call(:"sense.show_message", ["fire"])
     cast_activate_group(:actor, %{:status => :emergency})
-    :timer.sleep(1000)
+    :timer.sleep(200)
     loop()
   end
 
   deflf loop() do
-    IO.inspect :loop_start
-    receive do
-      msg ->
-        receive_msg(msg)
+    try do
+      receive do
+        msg ->
+          receive_msg(msg)
+      end
+    catch
+      _, e -> IO.puts "error: #{inspect e}"
     end
-    IO.inspect :loop_end
     loop()
   end
 
