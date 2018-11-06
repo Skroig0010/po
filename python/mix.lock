@@ -1,0 +1,4 @@
+%{
+  "contextEX": {:hex, :contextEX, "0.3.6", "f29cd92b9810ab1a4a8b0487d38b19c6e29ca5af0d85bf5920174e88dd437799", [:mix], [], "hexpm"},
+  "erlport": {:hex, :erlport, "0.10.0", "2436ec2f4ed62538c6e9c52f523f9315b6002ee7e298d9bd10b35abc3f6b32e7", [:rebar3], [], "hexpm"},
+}
