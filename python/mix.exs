@@ -29,7 +29,6 @@ defmodule Python.Mixfile do
   defp deps do
     [
       {:erlport, "~> 0.10.0"},
-      {:contextEX, path: "../contextEX"},
     ]
   end
 end
