@@ -27,7 +27,7 @@ defmodule Anim do
         end
       end)
     end)
-    Python.call(:"sense.set_pixels", cells)
+    Python.call(:"sense.set_pixels", [cells])
     loop(rad + 0.01)
   end
 end
