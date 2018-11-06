@@ -5,7 +5,7 @@ defmodule MyContextExSample2.Sensor.SmokeSensor do
   def loop(pid) do
     try do
       raw = Python.call(:get_accelerometer_raw, [])
-      send pid, %Event{type: :smoke, value: hd(raw) > 40}
+      send pid, %Event{type: :smoke, value: hd(raw) > 0}
       :timer.sleep(1000)
       IO.inspect raw
     catch
