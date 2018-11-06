@@ -36,14 +36,14 @@ defmodule MyContextExSample2.Actor do
   defp receive_msg(%Event{type: :thermometer, value: val}) when val > 40 do
     IO.inspect 0
     IO.inspect val
-    Python.call(:"sense.set_pixel", [0, 0, trunc(val), 0, 255])
+    Python.call(:"sense.set_pixel", [0, 0, rem(trunc(val * 100), 255), 0, 255])
     cast_activate_layer(%{:temperature => :high}) 
   end
 
   defp receive_msg(%Event{type: :thermometer, value: val}) when val <= 40 do 
     IO.inspect 1
     IO.inspect val
-    Python.call(:"sense.set_pixel", [0, 0, trunc(val), 255, 255])
+    Python.call(:"sense.set_pixel", [0, 0, rem(trunc(val * 100), 255), 255, 255])
     cast_activate_layer(%{:temperature => :normal})
   end
 
