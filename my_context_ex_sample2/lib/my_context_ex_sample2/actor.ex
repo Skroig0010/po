@@ -15,6 +15,7 @@ defmodule MyContextExSample2.Actor do
   end
 
   deflf loop(), %{:temperature => :high, :smoke => true} do
+    IO.inspect "called";
     Python.call(:"sense.show_message", ["fire"])
     cast_activate_group(:actor, %{:status => :emergency})
     :timer.sleep(1000)
