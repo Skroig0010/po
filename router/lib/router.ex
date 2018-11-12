@@ -6,7 +6,7 @@ defmodule Router do
       if !(Node.list |> Enum.member?(node_name)) do
         Node.connect(node_name)
       end
-      Node.spawn(node_name, module, fun, args)
+      Node.spawn_link(node_name, module, fun, args)
     end
   end
 end
