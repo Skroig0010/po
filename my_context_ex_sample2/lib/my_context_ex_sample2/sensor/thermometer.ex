@@ -1,5 +1,6 @@
 defmodule MyContextExSample2.Sensor.Thermometer do
   def start(pid) do
+    IO.inspect "thermo 0"
     loop(pid)
   end
   def loop(pid) do

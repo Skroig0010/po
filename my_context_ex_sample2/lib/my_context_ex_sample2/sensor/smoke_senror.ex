@@ -1,5 +1,6 @@
 defmodule MyContextExSample2.Sensor.SmokeSensor do
   def start(pid) do
+    IO.inspect "smoke 0"
     loop(pid)
   end
   def loop(pid) do
