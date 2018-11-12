@@ -10,6 +10,7 @@ defmodule MyContextExSample2.Sensor.SmokeSensor do
       IO.inspect raw
     catch
       _, e -> IO.puts "error: #{inspect e}"
+        IO.puts "まだ起動してない"
     end
     loop(pid)
   end

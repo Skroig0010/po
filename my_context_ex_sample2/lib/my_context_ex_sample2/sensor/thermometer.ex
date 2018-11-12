@@ -10,6 +10,7 @@ defmodule MyContextExSample2.Sensor.Thermometer do
       :timer.sleep(200)
     catch
       _, e -> IO.puts "error: #{inspect e}"
+        IO.puts "まだ起動してない"
     end
     loop(pid)
   end

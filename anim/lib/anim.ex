@@ -22,11 +22,13 @@ defmodule Anim do
       Enum.map(0..7, fn x ->
         case trunc(qubic(rem(trunc(rad * 10) + x, 20) / 10) * 5) do
           a when a <= y -> [trunc((:math.sin(rad) + 1.0) * 128), trunc((:math.sin(rad + 1) + 1.0) * 128), trunc((:math.sin(rad + 2) + 1.0) * 128)]
+            IO.inspect a
           a when a > y -> [0, 0, 0]
+            IO.inspect a
         end
       end)
     end)
-    Python.call(:"sense.set_pixels", [cells])
+    # Python.call(:"sense.set_pixels", [cells])
     loop(rad + 0.01)
   end
 
