@@ -7,5 +7,4 @@
                         'Elixir.MyContextExSample2.Sensor.SmokeSensor',
                         'Elixir.MyContextExSample2.Sensor.Thermometer']},
               {registered,[]},
-              {vsn,"0.1.0"},
-              {extra_applications,[logger]}]}.
+              {vsn,"0.1.0"}]}.

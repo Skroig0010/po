@@ -1,5 +1,6 @@
 defmodule MyContextExSample2 do
   def start() do
+    ContextEX.start()
     Python.init()
     actors = for n <- [0, 1, 3] do
       IO.inspect n
