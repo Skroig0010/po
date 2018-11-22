@@ -8,6 +8,11 @@ use Mix.Config
 # if you want to provide default values for your application for
 # 3rd-party users, it should be done in your "mix.exs" file.
 
+config :ping_pong,
+  field_width: 8,
+  field_height: 8,
+  bar_width: 4,
+  bar_height: 1
 # You can configure your application as:
 #
 #     config :ping_pong, key: :value

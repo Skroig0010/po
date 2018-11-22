@@ -3,12 +3,14 @@ defmodule PingPong.Controller do
     loop(:released, :middle)
   end
 
-  def loop(action, direction) do
+  defp loop(action, direction) do
     receive do
-      [new_action, new_direction] -> loop(new_action, new_direction)
-      pid -> send(pid, [action, direction])
+      [new_action, new_direction] ->
+        loop(new_action, new_direction)
+
+      pid when is_pid(pid) ->
+        send(pid, [action, direction])
         loop(action, direction)
-      _ -> loop(action, direction)
     end
   end
 end
