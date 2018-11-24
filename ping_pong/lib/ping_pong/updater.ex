@@ -4,8 +4,9 @@ defmodule PingPong.Updater do
   end
 
   defp loop() do
-    :timer.sleep(30)
+    :timer.sleep(32)
     send Process.whereis(:bar), :update
     send Process.whereis(:renderer), :update
+    loop()
   end
 end

@@ -9,6 +9,7 @@ defmodule PingPong.Actor do
       Process.register(controller, :controller)
       bar = spawn_link(PingPong.Entity.Bar, :start, [])
       Process.register(bar, :bar)
+      updater = spawn_link(PingPong.Updater, :start, [])
       loop()
     end
   end
@@ -28,5 +29,7 @@ defmodule PingPong.Actor do
     end
     loop()
   end
+
+  # コンテキストに応じてレイヤーを切り替えるときに、前作ったプロセスに:killを送る
 
 end

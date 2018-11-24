@@ -25,6 +25,7 @@ defmodule PingPong.Renderer do
           loop(@black_screen, 0)
         {:bar, x, y} -> List.update_at(display, y*8 + x, fn _ -> @w end)
           loop(display, drawned + 1)
+        :kill -> nil
       end
     end
   end

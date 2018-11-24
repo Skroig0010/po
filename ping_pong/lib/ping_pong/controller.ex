@@ -11,6 +11,7 @@ defmodule PingPong.Controller do
       pid when is_pid(pid) ->
         send(pid, [action, direction])
         loop(action, direction)
+      :kill -> nil
     end
   end
 end

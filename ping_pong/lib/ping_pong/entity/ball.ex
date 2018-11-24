@@ -15,6 +15,7 @@ defmodule PingPong.Entity.Ball do
       {:get_position, pid} -> 
         send(pid, {:ball, x, y})
         loop(x, y, vx, vy)
+      :kill -> nil
     end
   end
 
