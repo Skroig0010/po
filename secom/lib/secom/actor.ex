@@ -53,6 +53,9 @@ defmodule Secom.Actor do
     cast_activate_layer(%{:smoke => false})
   end
 
+  defp receive_msg(%Secom.Event{type: :updater, value: 0}) do 
+  end
+
   defp receive_msg(msg) do
     IO.puts "there is no function for this↓ message."
     IO.inspect msg
