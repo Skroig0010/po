@@ -54,6 +54,7 @@ defmodule Secom.Actor do
   end
 
   defp receive_msg(%Secom.Event{type: :updater, value: 0}) do 
+    IO.inspect :updated
   end
 
   defp receive_msg(msg) do
