@@ -17,7 +17,7 @@ defmodule PingPong.Actor do
     try do
       receive do
         # キー入力の値を取得
-        %PingPong.Event.KeyEvent{value: val} -> send Process.whereis(:controller), String.to_atom(val)
+        %PingPong.Event.KeyEvent{value: val} -> send Process.whereis(:controller), Enum.map(val, String.to_atom)
       end
       # バーの位置を更新
       # ボールの位置を取得
