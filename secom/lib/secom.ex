@@ -9,9 +9,9 @@ defmodule Secom do
       actor_pid = Router.route(n, Secom.Actor, :start, [])
       Router.route(n, Secom.Sensor.SmokeSensor, :start, [actor_pid])
       Router.route(n, Secom.Sensor.Thermometer, :start, [actor_pid])
-      Router.route(n, Secom.Sensor.HumanSensor, :start, [actor_pid])
+      # Router.route(n, Secom.Sensor.HumanSensor, :start, [actor_pid])
       Router.route(n, Secom.Sensor.Updater, :start, [actor_pid])
     end
-    # spawn_link(Secom.Clock, :start, [])
+    spawn_link(Secom.Clock, :start, [])
   end
 end
