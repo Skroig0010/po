@@ -4,7 +4,7 @@ defmodule Secom.Actor do
   def start() do
     Python.init()
     init_context(:actor)
-    #loop()
+    loop()
   end
 
 
