@@ -12,6 +12,6 @@ defmodule Secom do
       Router.route(n, Secom.Sensor.HumanSensor, :start, [actor_pid])
       Router.route(n, Secom.Sensor.Updater, :start, [actor_pid])
     end
-    spawn_link(Secom.Clock, :start, [])
+    # spawn_link(Secom.Clock, :start, [])
   end
 end
