@@ -68,7 +68,7 @@ defmodule Secom.Actor do
   end
 
   deflfp receive_msg(msg) do
-    IO.puts "there is no function for this↓ message."
+    IO.puts "there is no function for the following message."
     IO.inspect msg
   end
 
