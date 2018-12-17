@@ -29,6 +29,7 @@ defmodule PingPong.Entity.Bar do
         loop(x, y, %PingPong.Entity.KeyState{})
       {:get_position, pid} -> send pid, {:bar, x, y}
         loop(x, y, key_state)
+      :kill -> nil
     end
   end
 end

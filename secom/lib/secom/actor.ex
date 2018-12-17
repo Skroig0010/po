@@ -14,6 +14,10 @@ defmodule Secom.Actor do
     loop()
   end
 
+  deflf loop(), %{:suspicious_person => true} do
+    Python.call(:"sense.show_message", ["reporting suspicious person"])
+  end
+
   deflf loop(), %{:temperature => :high, :smoke => true} do
     Python.call(:"sense.show_message", ["fire"])
     cast_activate_group(:actor, %{:status => :emergency})
@@ -33,32 +37,47 @@ defmodule Secom.Actor do
     loop()
   end
 
-  defp receive_msg(%Secom.Event{type: :thermometer, value: val}) when val > 40 do
+  # thermometer
+  deflfp receive_msg(%Secom.Event{type: :thermometer, value: val}) when val > 40 do
     Python.call(:"sense.set_pixel", [0, 0, rem(trunc(val * 100), 255), 0, 255])
     cast_activate_layer(%{:temperature => :high}) 
   end
 
-  defp receive_msg(%Secom.Event{type: :thermometer, value: val}) when val <= 40 do 
+  deflfp receive_msg(%Secom.Event{type: :thermometer, value: val}) when val <= 40 do 
     Python.call(:"sense.set_pixel", [0, 0, rem(trunc(val * 100), 255), 255, 255])
     cast_activate_layer(%{:temperature => :normal})
   end
 
-  defp receive_msg(%Secom.Event{type: :smoke, value: val}) when val == true do
+  # smoke sensor
+  deflfp receive_msg(%Secom.Event{type: :smoke, value: val}) when val == true do
     Python.call(:"sense.set_pixel", [0, 7, 255, 0, 255])
     cast_activate_layer(%{:smoke => true}) 
   end
 
-  defp receive_msg(%Secom.Event{type: :smoke, value: val}) when val == false do 
+  deflfp receive_msg(%Secom.Event{type: :smoke, value: val}) when val == false do 
     Python.call(:"sense.set_pixel", [0, 7, 0, 255, 255])
     cast_activate_layer(%{:smoke => false})
   end
 
-  defp receive_msg(%Secom.Event{type: :updater, value: 0}) do 
+  # human sensor
+  deflfp receive_msg(%Secom.Event{type: :human, value: val}), %{:time => time} when val == true and (time > 23 or time < 5) do
+    Python.call(:"sense.set_pixel", [0, 3, 255, 255, 255])
+    cast_activate_layer(%{:suspicious_person => true})
+  end
+
+  deflfp receive_msg(%Secom.Event{type: :human, value: _}) do
+    Python.call(:"sense.set_pixel", [0, 3, 0, 0, 0])
+    cast_activate_layer(%{:suspicious_person => false})
+  end
+
+  # updater
+  deflfp receive_msg(%Secom.Event{type: :updater, value: 0}) do 
     Python.call(:"sense.set_pixel", [3, 3, 255, 255, 255])
   end
 
-  defp receive_msg(msg) do
-    IO.puts "there is no function for this↓ message."
+  # default method
+  deflfp receive_msg(msg) do
+    IO.puts "there is no function for the following message."
     IO.inspect msg
   end
 
