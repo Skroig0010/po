@@ -1,6 +1,6 @@
 {application,python,
-             [{applications,[kernel,stdlib,elixir,logger]},
-              {description,"python"},
+             [{description,"python"},
               {modules,['Elixir.Python']},
               {registered,[]},
-              {vsn,"0.1.0"}]}.
+              {vsn,"0.1.0"},
+              {applications,[kernel,stdlib,elixir,logger]}]}.

@@ -3,8 +3,9 @@ defmodule Secom do
   def start() do
     ContextEX.start()
     Python.init()
-    Router.connect_all([0])
-    for n <- [0] do
+    Router.connect_all([1])
+    :timer.sleep(1000)
+    for n <- [1] do
       IO.inspect n
       actor_pid = Router.route(n, Secom.Actor, :start, [])
       Router.route(n, Secom.Sensor.SmokeSensor, :start, [actor_pid])
