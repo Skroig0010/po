@@ -8,6 +8,7 @@ defmodule Secom.Actor do
 
   def start(floor, shutter, sprinkler) do
     Python.init()
+    IO.inspect "floorは？？？？:"<>Integer.to_string(floor)
     init_context([:actor, get_floor_atom(floor)])
     loop(floor, shutter, sprinkler)
   end
