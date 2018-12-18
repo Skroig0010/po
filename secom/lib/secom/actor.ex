@@ -3,12 +3,11 @@ defmodule Secom.Actor do
 
   @spec get_floor_atom(integer) :: atom
   defp get_floor_atom(floor) do
-    String.to_atom("floor" <> floor)
+    String.to_atom("floor" <> Integer.to_string(floor))
   end
 
   def start(floor, shutter, sprinkler) do
     Python.init()
-    IO.inspect "floorは？？？？:"<>Integer.to_string(floor)
     init_context([:actor, get_floor_atom(floor)])
     loop(floor, shutter, sprinkler)
   end
