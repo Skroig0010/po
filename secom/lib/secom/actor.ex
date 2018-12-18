@@ -6,13 +6,13 @@ defmodule Secom.Actor do
     String.to_atom("floor" <> Integer.to_string(floor))
   end
 
-  def start(floor, shutter, sprinkler) do
+  def start(floor, shutter, sprinkler, reporting_device) do
     Python.init()
     init_context([:actor, get_floor_atom(floor)])
-    loop(floor, shutter, sprinkler)
+    loop(floor, shutter, sprinkler, reporting_device)
   end
 
-  defp receive_and_actuate(sprinkler, shutter) do
+  defp receive_and_actuate(shutter, sprinkler) do
       receive do
         msg ->
           receive_msg(msg)
@@ -23,38 +23,40 @@ defmodule Secom.Actor do
   end
 
 
-  deflf loop(floor, shutter, sprinkler), %{:status => :emergency} do
+  deflf loop(floor, shutter, sprinkler, reporting_device), %{:status => :emergency} do
     Python.call(:"sense.show_message", ["emergency"])
     try do
-      receive_and_actuate(sprinkler, shutter)
+      receive_and_actuate(shutter, sprinkler)
     catch
       _, e -> IO.puts "error: #{inspect e}"
     end
 
-    loop(floor, shutter, sprinkler)
+    loop(floor, shutter, sprinkler, reporting_device)
   end
 
-  deflf loop(floor, shutter, sprinkler), %{:suspicious_person => true} do
+  deflf loop(floor, shutter, sprinkler, reporting_device), %{:suspicious_person => true} do
     Python.call(:"sense.show_message", ["reporting suspicious person"])
+    update_reporting_device(reporting_device)
+    loop(floor, shutter, sprinkler, reporting_device)
   end
 
 
-  deflf loop(floor, shutter, sprinkler), %{:temperature => :high, :smoke => true} do
+  deflf loop(floor, shutter, sprinkler, reporting_device), %{:temperature => :high, :smoke => true} do
     Python.call(:"sense.show_message", ["fire"])
     cast_activate_group(:actor, %{:status => :emergency})
     cast_activate_group(get_floor_atom(floor), %{:shutter => :close, :sprinkler => :on})
     :timer.sleep(200)
-    loop(floor, shutter, sprinkler)
+    loop(floor, shutter, sprinkler, reporting_device)
   end
 
-  deflf loop(floor, shutter, sprinkler) do
+  deflf loop(floor, shutter, sprinkler, reporting_device) do
     try do
       cast_activate_group(get_floor_atom(floor), %{:shutter => :open, :sprinkler => :off})
-      receive_and_actuate(sprinkler, shutter)
+      receive_and_actuate(shutter, sprinkler)
     catch
       _, e -> IO.puts "error: #{inspect e}"
     end
-    loop(floor, shutter, sprinkler)
+    loop(floor, shutter, sprinkler, reporting_device)
   end
 
   # thermometer
@@ -113,6 +115,7 @@ defmodule Secom.Actor do
     IO.inspect msg
   end
 
+  # TODO:Processに名前登録して簡単に呼べるようにする
   # sprinkler
   deflfp update_sprinkler(pid), %{:sprinkler => :on} do
     send pid, :on
@@ -129,5 +132,18 @@ defmodule Secom.Actor do
 
   deflfp update_shutter(pid), %{:shutter => :open} do
     send pid, :off
+  end
+
+  # reporting device
+  deflfp update_reporting_device(pid), %{:reporting => :doing} do
+    send pid, :on
+    cast_activate_layer(%{:reporting => :done})
+  end
+
+  deflfp update_reporting_device(_pid), %{:reporting => :done} do
+  end
+
+  deflfp update_reporting_device(_pid) do
+    cast_activate_layer(%{:reporting => :doing})
   end
 end
