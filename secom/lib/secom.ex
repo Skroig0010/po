@@ -4,11 +4,13 @@ defmodule Secom do
     ContextEX.start()
     Python.init()
     Router.connect_all([1])
-    :timer.sleep(1000)
     for n <- [1] do
       IO.inspect n
-      actor_pid = Router.route(n, Secom.Actor, :start, [])
+      shutter = Router.route(n, Secom.Actuator.Shutter, :start, [])
+      sprinkler = Router.route(n, Secom.Actuator.Sprinkler, :start, [])
+      actor_pid = Router.route(n, Secom.Actor, :start, [n, shutter, sprinkler])
       Router.route(n, Secom.Sensor.SmokeSensor, :start, [actor_pid])
+      Router.route(n, Secom.Sensor.StopButton, :start, [actor_pid])
       Router.route(n, Secom.Sensor.Thermometer, :start, [actor_pid])
       Router.route(n, Secom.Sensor.HumanSensor, :start, [actor_pid])
       Router.route(n, Secom.Sensor.Updater, :start, [actor_pid])

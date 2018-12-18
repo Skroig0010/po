@@ -5,7 +5,7 @@ defmodule Secom.Sensor.Thermometer do
   end
   def loop(pid) do
     try do
-      [_acton, direction] = Python.call(:wait_for_event, [])
+      [_action, direction] = Python.call(:wait_for_event, [])
       t = if(direction == 'up') do
         50
       else
