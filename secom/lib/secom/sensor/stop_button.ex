@@ -8,7 +8,7 @@ defmodule Secom.Sensor.StopButton do
       [action, _direction] = Python.call(:wait_for_event, [])
       t = (action == 'pressed')
       send pid, %Secom.Event{type: :stop_button, value: t}
-      IO.puts "stop_button"
+      IO.puts "stop_button updated"
       IO.inspect node()
       IO.inspect t
       :timer.sleep(200)

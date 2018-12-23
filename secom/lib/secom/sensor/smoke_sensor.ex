@@ -5,10 +5,10 @@ defmodule Secom.Sensor.SmokeSensor do
   end
   def loop(pid) do
     try do
-      [_acton, direction] = Python.call(:wait_for_event, [])
+      [_action, direction] = Python.call(:wait_for_event, [])
       send pid, %Secom.Event{type: :smoke, value: (direction == 'down')}
       :timer.sleep(200)
-      IO.puts "smoke_sensor"
+      IO.puts "smoke_sensor updated"
       IO.inspect node()
       IO.inspect direction
     catch
