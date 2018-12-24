@@ -32,13 +32,12 @@ defmodule Secom.Actor do
     try do
       receive_and_actuate()
     catch
-      _, e -> IO.puts "error: #{inspect e}"
+      x, e -> IO.puts "error: #{inspect e} : #{x}"
     end
     loop(floor)
   end
 
   deflf loop(floor), %{:temperature => :high, :smoke => true} do
-    Python.call(:"sense.show_message", ["fire"])
     cast_activate_group(get_floor_atom(floor), %{:status => :emergency})
     loop(floor)
   end
@@ -47,7 +46,7 @@ defmodule Secom.Actor do
     try do
       receive_and_actuate()
     catch
-      _, e -> IO.puts "error: #{inspect e}"
+      x, e -> IO.puts "error: #{inspect e} : #{x}"
     end
     loop(floor)
   end
