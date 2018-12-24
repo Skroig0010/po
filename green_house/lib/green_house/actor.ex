@@ -19,7 +19,7 @@ defmodule GreenHouse.Actor do
   end
 
   deflfp receive_msg(%GreenHouse.Event{type: :thermometer, value: val}), %{:month => month} when month >= 9 or month < 4 do
-
+    
   end
 
 end

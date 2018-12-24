@@ -5,11 +5,13 @@ defmodule GreenHouse do
     Router.connect_all([0])
     actors = for n <- [0] do
       IO.inspect n
-      humidifier = Router.route(n, GreenHouse.Actuator.Humidifier, :start, [])
-      heater = Router.route(n, GreenHouse.Actuator.Heater, :start, [])
-      fan = Router.route(n, GreenHouse.Actuator.FanSystem, :start, [])
-      window = Router.route(n, GreenHouse.Actuator.Window, :start, [])
-      actor_pid = Router.route(n, GreenHouse.Actor, :start, [humidifier, heater, fan, window])
+      actor_pid = Router.route(n, GreenHouse.Actor, :start, [])
+      # actuator
+      Router.route(n, GreenHouse.Actuator.Humidifier, :start, [])
+      Router.route(n, GreenHouse.Actuator.Heater, :start, [])
+      Router.route(n, GreenHouse.Actuator.FanSystem, :start, [])
+      Router.route(n, GreenHouse.Actuator.Window, :start, [])
+      # sensor
       Router.route(n, GreenHouse.Sensor.MoistureSensor, :start, [actor_pid])
       Router.route(n, GreenHouse.Sensor.HumiditySensor, :start, [actor_pid])
       Router.route(n, GreenHouse.Sensor.Thermometer, :start, [actor_pid])
