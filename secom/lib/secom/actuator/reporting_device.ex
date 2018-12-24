@@ -1,6 +1,7 @@
 defmodule Secom.Actuator.ReportingDevice do
   use ContextEX
   @reporter :reporting_device_pid
+
   def start() do
     IO.inspect "report0"
     Process.register(self(), @reporter)

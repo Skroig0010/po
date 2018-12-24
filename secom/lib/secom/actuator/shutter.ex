@@ -1,8 +1,10 @@
 defmodule Secom.Actuator.Shutter do
   use ContextEX
   @shutter :shutter_pid
+
   def start() do
     IO.inspect "shutter0"
+    Process.register(self(), @shutter)
     loop()
   end
 

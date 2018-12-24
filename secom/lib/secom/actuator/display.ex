@@ -1,6 +1,7 @@
 defmodule Secom.Actuator.Display do
   use ContextEX
   @display :display_pid
+
   def start() do
     IO.inspect "display0"
     Process.register(self(), @display)
