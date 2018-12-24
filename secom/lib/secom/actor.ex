@@ -13,44 +13,39 @@ defmodule Secom.Actor do
   end
 
   defp receive_and_actuate() do
-      receive do
-        msg ->
-          receive_msg(msg)
-      end
+    receive do
+      msg ->
+        receive_msg(msg)
+    end
 
-      Secom.Actuator.Sprinkler.update()
-      Secom.Actuator.Shutter.update()
+    Secom.Actuator.Sprinkler.update()
+    Secom.Actuator.Shutter.update()
+    Secom.Actuator.ReportingDevice.update()
+    Secom.Actuator.Display.update()
   end
 
+  deflf loop(floor), %{:suspicious_person => true} do
+    loop(floor)
+  end
 
   deflf loop(floor), %{:status => :emergency} do
-    Python.call(:"sense.show_message", ["emergency"])
     try do
-      receive_and_actuate(shutter, sprinkler)
+      receive_and_actuate()
     catch
       _, e -> IO.puts "error: #{inspect e}"
     end
     loop(floor)
   end
 
-  deflf loop(floor), %{:suspicious_person => true} do
-    Python.call(:"sense.show_message", ["reporting suspicious person"])
-    update_reporting_device(reporting_device)
-    loop(floor)
-  end
-
-
   deflf loop(floor), %{:temperature => :high, :smoke => true} do
     Python.call(:"sense.show_message", ["fire"])
-    cast_activate_group(:actor, %{:status => :emergency})
-    cast_activate_group(get_floor_atom(floor), %{:shutter => :close, :sprinkler => :on})
-    :timer.sleep(200)
+    cast_activate_group(get_floor_atom(floor), %{:status => :emergency})
     loop(floor)
   end
 
   deflf loop(floor) do
     try do
-      receive_and_actuate(shutter, sprinkler)
+      receive_and_actuate()
     catch
       _, e -> IO.puts "error: #{inspect e}"
     end
