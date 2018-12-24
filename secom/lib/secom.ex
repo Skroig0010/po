@@ -9,6 +9,7 @@ defmodule Secom do
       Router.route(n, Secom.Actuator.Shutter, :start, [])
       Router.route(n, Secom.Actuator.Sprinkler, :start, [])
       Router.route(n, Secom.Actuator.ReportingDevice, :start, [])
+      Router.route(n, Secom.Actuator.Display, :start, [])
       actor_pid = Router.route(n, Secom.Actor, :start, [n])
       Router.route(n, Secom.Sensor.SmokeSensor, :start, [actor_pid])
       Router.route(n, Secom.Sensor.StopButton, :start, [actor_pid])
