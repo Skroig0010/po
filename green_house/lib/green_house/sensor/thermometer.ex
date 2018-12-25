@@ -1,6 +1,6 @@
 defmodule GreenHouse.Sensor.Thermometer do
   def start(pid) do
-    IO.inspect "thermo 0"
+    IO.inspect "start thermometer"
     loop(pid)
   end
   def loop(pid) do
@@ -12,9 +12,7 @@ defmodule GreenHouse.Sensor.Thermometer do
         30
       end
       send pid, %Secom.Event{type: :thermometer, value: t}
-      IO.puts "thermometer"
-      IO.inspect node()
-      IO.inspect t
+      IO.puts "thermometer"  <> ":" <> Atom.to_string(node()) <> ":" <> Integer.to_string(t)
       :timer.sleep(200)
     catch
       _, e -> IO.puts "error: #{inspect e}"

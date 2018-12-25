@@ -18,8 +18,8 @@ defmodule GreenHouse.Actor do
     loop()
   end
 
-  deflfp receive_msg(%GreenHouse.Event{type: :thermometer, value: val}), %{:month => month} when month >= 9 or month < 4 do
-    
+  # 季節ごとに設定温度を変える
+  deflfp receive_msg(%GreenHouse.Event{type: :thermometer, value: val}), %{:month => month} when val < 10 (month >= 9 or month < 4) do
   end
 
 end
