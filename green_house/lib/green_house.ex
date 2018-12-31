@@ -1,5 +1,12 @@
 defmodule GreenHouse do
   use ContextEX
+  @moduledoc """
+  0 1
+  2 3
+  0->1
+  0->2
+  2->3
+  """
   @actors [0, 1]
   @fan_directions [{0, 1, :"0"}]
   @type fan :: [{from :: integer, to :: integer, actor_id :: atom}]
@@ -7,7 +14,7 @@ defmodule GreenHouse do
     ContextEX.start()
     Python.init()
     Router.connect_all(@actors)
-    actors = for n <- @actors do
+    for n <- @actors do
       IO.inspect n
       actor_pid = Router.route(n, GreenHouse.Actor, :start, [String.to_atom(Integer.to_string(n))])
       # actuator
@@ -29,13 +36,14 @@ defmodule GreenHouse do
     from === :normal && to === :cold
   end
 
-  deflfp temperature_compare(from, to), %{:month => month} do
+  deflfp temperature_compare(from, to) do
     from === :normal && to === :hot
   end
 
   def loop() do
     # こんな使い方していいのか？
     # 10分に1回調べるとかしたいんだけど10分間ファン点きっぱなしになる
+    # sinkノードの
     map = get_activelayers()
     @fan_directions |> Enum.map(fn [from, to, actor_id] ->
       if(temperature_compare(map |> Map.get(from), map |> Map.get(to))) do

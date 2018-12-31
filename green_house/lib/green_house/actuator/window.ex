@@ -1,4 +1,4 @@
-defmodule GreenHouse.Sensor.Window do
+defmodule GreenHouse.Actuator.Window do
   use ContextEX
   @window :window_pid
 

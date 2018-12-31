@@ -1,4 +1,4 @@
-defmodule GreenHouse.Sensor.Heater do
+defmodule GreenHouse.Actuator.Heater do
   use ContextEX
   @heater :heater_pid
 

@@ -18,6 +18,7 @@ defmodule GreenHouse.Actor do
       GreenHouse.Actuator.Heater.update()
       GreenHouse.Actuator.Humidifier.update()
       GreenHouse.Actuator.Window.update()
+      GreenHouse.Actuator.Sprinkler.update()
       # WindSensor
       # RainSensor
       # SoilTemperatureSensor
@@ -37,15 +38,36 @@ defmodule GreenHouse.Actor do
     end
   end
 
-  deflfp receive_msg(id, %GreenHouse.Event{type: :thermometer, value: val}), %{:month => month} when month >= 9 or month < 4 do
-    if(val > 28) do
-      cast_activate_group(:sink, %{id => :hot})
-    else
-      cast_activate_group(:sink, %{id => :normal})
+  deflfp receive_msg(id, %GreenHouse.Event{type: :thermometer, value: val}) when val > 28 do
+    if(val > 30) do
+      # 30℃を超えたら全ての窓を開ける
+      cast_activate_group(:actor, %{:state => :hot})
     end
+    cast_activate_group(:sink, %{id => :hot})
   end
 
-  deflfp receive_msg(id, %GreenHouse.Event{type: :moisture_sensor, value: val}) do
+  deflfp receive_msg(id, %GreenHouse.Event{type: :thermometer, value: val}) do
+    if(val < 25) do
+      # 25℃未満なら全ての窓を閉める
+      cast_activate_group(:actor, %{:state => :normal})
+    end
+    cast_activate_group(:sink, %{id => :normal})
+  end
+
+  deflfp receive_msg(_id, %GreenHouse.Event{type: :moisture_sensor, value: val}) when val < 20 do
+    cast_activate_layer(%{:soil_moisture => :low})
+  end
+
+  deflfp receive_msg(_id, %GreenHouse.Event{type: :moisture_sensor, value: _val}) do
+    cast_activate_layer(%{:soil_moisture => :normal})
+  end
+
+  deflfp receive_msg(_id, %GreenHouse.Event{type: :humidity_sensor, value: val}) when val < 0.3 do
+    cast_activate_layer(%{:humidity => :low})
+  end
+
+  deflfp receive_msg(_id, %GreenHouse.Event{type: :humidity_sensor, value: _val}) do
+    cast_activate_layer(%{:humidity => :normal})
   end
 
 end

@@ -11,7 +11,7 @@ defmodule GreenHouse.Sensor.Thermometer do
       else
         30
       end
-      send pid, %Secom.Event{type: :thermometer, value: t}
+      send pid, %GreenHouse.Event{type: :thermometer, value: t}
       IO.puts "thermometer"  <> ":" <> Atom.to_string(node()) <> ":" <> Integer.to_string(t)
       :timer.sleep(200)
     catch

@@ -1,4 +1,4 @@
-defmodule GreenHouse.Sensor.FanSystem do
+defmodule GreenHouse.Actuator.FanSystem do
   use ContextEX
   @fan_system :fan_system_pid
 
@@ -9,11 +9,11 @@ defmodule GreenHouse.Sensor.FanSystem do
   end
 
   # 温度差がある場合はファンを回す
-  deflf update(from_ids, to_ids), %{:temperature_diff => true} do
+  deflf update(), %{:temperature_diff => true} do
     send Process.whereis(@fan_system), :on
   end
 
-  deflf update(_ids) do
+  deflf update() do
     send Process.whereis(@fan_system), :off
   end
 

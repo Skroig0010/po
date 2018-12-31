@@ -1,4 +1,4 @@
-defmodule GreenHouse.Sensor.Humidifier do
+defmodule GreenHouse.Actuator.Humidifier do
   use ContextEX
   @humidifier :humidifier_pid
 

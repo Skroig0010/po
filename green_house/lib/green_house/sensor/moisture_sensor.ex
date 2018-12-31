@@ -11,7 +11,7 @@ defmodule GreenHouse.Sensor.MoistureSensor do
       else
         0.5
       end
-      send pid, %Secom.Event{type: :moisture_sensor, value: t}
+      send pid, %GreenHouse.Event{type: :moisture_sensor, value: t}
       IO.puts "moisture"  <> ":" <> Atom.to_string(node()) <> ":" <> Integer.to_string(t)
       :timer.sleep(200)
     catch
