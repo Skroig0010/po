@@ -19,7 +19,9 @@ defmodule GreenHouse.Actuator.Heater do
   def loop() do
     receive do
       :on -> IO.puts "heater activated"
+        Python.call(:"sense.set_pixel", [7, 0, 255, 0, 0])
       :off -> IO.puts "heater deactivated"
+        Python.call(:"sense.set_pixel", [7, 0, 0, 0, 0])
     end
   end
 end

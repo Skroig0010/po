@@ -19,7 +19,9 @@ defmodule GreenHouse.Actuator.Sprinkler do
   def loop() do
     receive do
       :on -> IO.puts "Sprinkler activated"
+        Python.call(:"sense.set_pixel", [7, 7, 0, 255, 255])
       :off -> IO.puts "Sprinkler deactivated"
+        Python.call(:"sense.set_pixel", [7, 7, 0, 0, 0])
     end
   end
 end

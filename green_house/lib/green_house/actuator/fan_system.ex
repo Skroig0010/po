@@ -20,7 +20,9 @@ defmodule GreenHouse.Actuator.FanSystem do
   def loop() do
     receive do
       :on -> IO.puts "fan system activated"
+        Python.call(:"sense.set_pixel", [0, 0, 0, 0, 255])
       :off -> IO.puts "fan system deactivated"
+        Python.call(:"sense.set_pixel", [0, 0, 0, 0, 0])
     end
   end
 end
