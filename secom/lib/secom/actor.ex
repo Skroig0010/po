@@ -89,8 +89,8 @@ defmodule Secom.Actor do
   # updater
   # センサーをjoystickで代用してるのでjoystickの入力がないとloop()が止まってしまい、コンテキスト変化に対応できない
   # ちゃんとしたセンサーを乗せたら必要なくなる
-  deflfp receive_msg(%Secom.Event{type: :updater, value: 0}) do 
-    IO.inspect "actor updated"
+  deflfp receive_msg(%Secom.Event{type: :updater, value: val}) do 
+    IO.inspect "actor updated" <> Integer.to_string(val)
     Python.call(:"sense.set_pixel", [3, 3, 255, 255, 255])
   end
 
