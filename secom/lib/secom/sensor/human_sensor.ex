@@ -9,8 +9,7 @@ defmodule Secom.Sensor.HumanSensor do
       send pid, %Secom.Event{type: :human, value: (direction == 'left')}
       :timer.sleep(200)
       IO.puts self(), "human_sensor updated"
-      IO.inspect node()
-      IO.inspect direction
+      IO.puts self(), "node:#{inspect node()}, #{inspect direction}"
     catch
       _, e -> IO.puts self(), "error: #{inspect e}"
         IO.puts self(), "まだ起動してない"

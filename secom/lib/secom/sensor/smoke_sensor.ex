@@ -9,8 +9,7 @@ defmodule Secom.Sensor.SmokeSensor do
       send pid, %Secom.Event{type: :smoke, value: (direction == 'down')}
       :timer.sleep(200)
       IO.puts self(), "smoke_sensor updated"
-      IO.inspect node()
-      IO.inspect direction
+      IO.puts self(), "node:#{inspect node()}, #{inspect direction}"
     catch
       _, e -> IO.puts self(), "error: #{inspect e}"
         IO.puts self(), "まだ起動してない"

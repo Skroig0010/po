@@ -13,8 +13,7 @@ defmodule Secom.Sensor.Thermometer do
       end
       send pid, %Secom.Event{type: :thermometer, value: t}
       IO.puts self(), "thermometer updated"
-      IO.inspect node()
-      IO.inspect t
+      IO.puts self(), "node:#{inspect node()}, #{inspect t}"
       :timer.sleep(200)
     catch
       _, e -> IO.puts self(), "error: #{inspect e}"
