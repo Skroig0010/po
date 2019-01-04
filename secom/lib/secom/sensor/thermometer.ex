@@ -12,12 +12,12 @@ defmodule Secom.Sensor.Thermometer do
         30
       end
       send pid, %Secom.Event{type: :thermometer, value: t}
-      IO.puts Process.group_leader(), "thermometer updated"
-      IO.puts Process.group_leader(), "node:#{inspect node()}, #{inspect t}"
+      IO.puts Process.whereis(:iex), "thermometer updated"
+      IO.puts Process.whereis(:iex), "node:#{inspect node()}, #{inspect t}"
       :timer.sleep(200)
     catch
-      _, e -> IO.puts Process.group_leader(), "error: #{inspect e}"
-        IO.puts Process.group_leader(), "まだ起動してない"
+      _, e -> IO.puts Process.whereis(:iex), "error: #{inspect e}"
+        IO.puts Process.whereis(:iex), "まだ起動してない"
     end
     loop(pid)
   end

@@ -14,7 +14,7 @@ defmodule Secom.Actor do
   end
 
   defp receive_and_actuate() do
-    IO.puts Process.group_leader(), "#{inspect get_activelayers()} in #{inspect Node.self()}"
+    IO.puts Process.whereis(:iex), "#{inspect get_activelayers()} in #{inspect Node.self()}"
     receive do
       msg ->
         receive_msg(msg)
@@ -34,7 +34,7 @@ defmodule Secom.Actor do
     try do
       receive_and_actuate()
     catch
-      x, e -> IO.puts Process.group_leader(), "error: #{inspect e} : #{x}"
+      x, e -> IO.puts Process.whereis(:iex), "error: #{inspect e} : #{x}"
     end
     loop(floor)
   end
@@ -48,7 +48,7 @@ defmodule Secom.Actor do
     try do
       receive_and_actuate()
     catch
-      x, e -> IO.puts Process.group_leader(), "error: #{inspect e} : #{x}"
+      x, e -> IO.puts Process.whereis(:iex), "error: #{inspect e} : #{x}"
     end
     loop(floor)
   end
@@ -106,7 +106,7 @@ defmodule Secom.Actor do
 
   # default method
   deflfp receive_msg(msg) do
-    IO.puts Process.group_leader(), "there is no function for the following message."
+    IO.puts Process.whereis(:iex), "there is no function for the following message."
     IO.inspect msg
   end
 end

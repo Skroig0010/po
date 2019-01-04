@@ -23,8 +23,8 @@ defmodule Secom.Actuator.Sprinkler do
         :off -> :none# deactuate sprinkler
       end
     catch
-      _, e -> IO.puts Process.group_leader(), "error: #{inspect e}"
-        IO.puts Process.group_leader(), "まだ起動してない"
+      _, e -> IO.puts Process.whereis(:iex), "error: #{inspect e}"
+        IO.puts Process.whereis(:iex), "まだ起動してない"
     end
     loop()
   end

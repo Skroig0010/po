@@ -19,12 +19,12 @@ defmodule Secom.Actuator.Shutter do
   defp loop() do
     try do
       receive do
-        :on -> IO.puts Process.group_leader(), "shutter closed"# close shutter
+        :on -> IO.puts Process.whereis(:iex), "shutter closed"# close shutter
         :off -> :none# open shutter
       end
     catch
-      _, e -> IO.puts Process.group_leader(), "error: #{inspect e}"
-        IO.puts Process.group_leader(), "まだ起動してない"
+      _, e -> IO.puts Process.whereis(:iex), "error: #{inspect e}"
+        IO.puts Process.whereis(:iex), "まだ起動してない"
     end
     loop()
   end
