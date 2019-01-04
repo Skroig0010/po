@@ -25,8 +25,8 @@ defmodule Secom.Actuator.Display do
         msg -> Python.call(:"sense.show_message", [msg])
       end
     catch
-      _, e -> IO.puts self(), "error: #{inspect e}"
-        IO.puts self(), "まだ起動してない"
+      _, e -> IO.puts Process.group_leader(), "error: #{inspect e}"
+        IO.puts Process.group_leader(), "まだ起動してない"
     end
     loop()
   end
