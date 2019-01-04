@@ -13,7 +13,7 @@ defmodule Python do
   end
 
   def call(func, args) do
-    Agent.get(@agent, &(&1))
+    Agent.get(Process.whereis(@agent), &(&1))
     |> :python.call(:sample, func, args)
   end
 end
