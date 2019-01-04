@@ -18,6 +18,8 @@ defmodule Secom.Actor do
         receive_msg(msg)
     end
 
+    IO.puts "#{inspect get_activelayers()} in #{inspect Node.self()}"
+
     Secom.Actuator.Sprinkler.update()
     Secom.Actuator.Shutter.update()
     Secom.Actuator.ReportingDevice.update()
@@ -29,7 +31,6 @@ defmodule Secom.Actor do
   end
 
   deflf loop(floor), %{:status => :emergency} do
-    IO.puts "emergency!!!!!!!!!! #{inspect Node.self()}"
     try do
       receive_and_actuate()
     catch
