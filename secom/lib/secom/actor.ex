@@ -13,12 +13,12 @@ defmodule Secom.Actor do
   end
 
   defp receive_and_actuate() do
+    IO.puts "#{inspect get_activelayers()} in #{inspect Node.self()}"
     receive do
       msg ->
         receive_msg(msg)
     end
 
-    IO.puts "#{inspect get_activelayers()} in #{inspect Node.self()}"
 
     Secom.Actuator.Sprinkler.update()
     Secom.Actuator.Shutter.update()
