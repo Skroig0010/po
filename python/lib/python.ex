@@ -13,7 +13,12 @@ defmodule Python do
   end
 
   def call(func, args) do
+    if(is_pid Process.whereis(@agent)) do
     Agent.get(Process.whereis(@agent), &(&1))
     |> :python.call(:sample, func, args)
+    else
+      :timer.sleep(100)
+      call(func, args)
+    end
   end
 end
