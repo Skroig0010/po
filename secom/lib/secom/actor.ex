@@ -10,6 +10,7 @@ defmodule Secom.Actor do
     Python.init()
     init_context([:actor, get_floor_atom(floor)])
     loop(floor)
+    :timer.sleep(:infinity)
   end
 
   defp receive_and_actuate() do
