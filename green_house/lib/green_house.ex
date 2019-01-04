@@ -7,25 +7,28 @@ defmodule GreenHouse do
   0->2
   2->3
   """
-  @actors [0, 1]
-  @fan_directions [{0, 1, :"0"}]
-  @type fan :: [{from :: integer, to :: integer, actor_id :: atom}]
+  @type actor :: {address :: integer, actor_id :: atom}
+  @actors [{160, :"0"}, {161, :"1"}, {162, :"2"}, {163, :"3"}]
+
+  @type fan :: [{from :: atom, to :: atom, actor_id :: atom}]
+  @fan_directions [{:"0", :"1", :"0"}]
+
   def start() do
     ContextEX.start()
     Python.init()
-    Router.connect_all(@actors)
-    for n <- @actors do
-      IO.inspect n
-      actor_pid = Router.route(n, GreenHouse.Actor, :start, [String.to_atom(Integer.to_string(n))])
+    Router.connect_all(Enum.map(@actors, fn {id, _} -> id end))
+    for {address, id} <- @actors do
+      IO.puts "Address:" <> Integer.to_string(address) <> ", id:" <> Atom.to_string(id)
+      actor_pid = Router.route(address, GreenHouse.Actor, :start, [id])
       # actuator
-      Router.route(n, GreenHouse.Actuator.Humidifier, :start, [])
-      Router.route(n, GreenHouse.Actuator.Heater, :start, [])
-      Router.route(n, GreenHouse.Actuator.FanSystem, :start, [])
-      Router.route(n, GreenHouse.Actuator.Window, :start, [])
+      Router.route(address, GreenHouse.Actuator.Humidifier, :start, [])
+      Router.route(address, GreenHouse.Actuator.Heater, :start, [])
+      Router.route(address, GreenHouse.Actuator.FanSystem, :start, [])
+      Router.route(address, GreenHouse.Actuator.Window, :start, [])
       # sensor
-      Router.route(n, GreenHouse.Sensor.MoistureSensor, :start, [actor_pid])
-      Router.route(n, GreenHouse.Sensor.HumiditySensor, :start, [actor_pid])
-      Router.route(n, GreenHouse.Sensor.Thermometer, :start, [actor_pid])
+      Router.route(address, GreenHouse.Sensor.MoistureSensor, :start, [actor_pid])
+      Router.route(address, GreenHouse.Sensor.HumiditySensor, :start, [actor_pid])
+      Router.route(address, GreenHouse.Sensor.Thermometer, :start, [actor_pid])
     end
 
     init_context(:sink)

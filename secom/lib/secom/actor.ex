@@ -29,6 +29,7 @@ defmodule Secom.Actor do
   end
 
   deflf loop(floor), %{:status => :emergency} do
+    IO.puts "emergency!!!!!!!!!!" <> Atom.to_string(self())
     try do
       receive_and_actuate()
     catch

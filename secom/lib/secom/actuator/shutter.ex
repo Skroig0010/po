@@ -8,7 +8,7 @@ defmodule Secom.Actuator.Shutter do
     loop()
   end
 
-  deflf update(), %{:state => :fire} do
+  deflf update(), %{:status => :emergency} do
     send Process.whereis(@shutter), :on
   end
 

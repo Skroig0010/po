@@ -8,7 +8,7 @@ defmodule Secom.Actuator.Sprinkler do
     loop()
   end
 
-  deflf update(), %{:state => :fire} do
+  deflf update(), %{:status => :emergency} do
     send Process.whereis(@sprinkler), :on
   end
 

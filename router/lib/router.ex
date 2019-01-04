@@ -3,7 +3,7 @@ defmodule Router do
   @spec connect_all([integer]) :: any
   def connect_all(lst) do
     for n <- lst do
-      with node_name = String.to_atom(@node_prefix <> Integer.to_string(n + 160))
+      with node_name = String.to_atom(@node_prefix <> Integer.to_string(n))
       do
         IO.inspect node_name
         IO.inspect Node.connect(node_name)
@@ -24,7 +24,7 @@ defmodule Router do
 
   @spec route(integer, module, atom, [any()]) :: pid
   def route(n, module, fun, args) do
-    with node_name = String.to_atom(@node_prefix <> Integer.to_string(n + 160))
+    with node_name = String.to_atom(@node_prefix <> Integer.to_string(n))
     do
       IO.inspect node_name
       Node.spawn_link(node_name, module, fun, args)
