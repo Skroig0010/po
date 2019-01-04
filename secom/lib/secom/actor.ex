@@ -29,7 +29,7 @@ defmodule Secom.Actor do
   end
 
   deflf loop(floor), %{:status => :emergency} do
-    IO.puts "emergency!!!!!!!!!!{inspect self}"
+    IO.puts "emergency!!!!!!!!!! #{inspect self()}"
     try do
       receive_and_actuate()
     catch
