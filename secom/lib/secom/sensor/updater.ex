@@ -5,7 +5,6 @@ defmodule Secom.Sensor.Updater do
   end
 
   def loop(pid) do
-    IO.inspect "actor updated"
     send pid, %Secom.Event{type: :updater, value: 0}
     :timer.sleep(1000)
     loop(pid)
