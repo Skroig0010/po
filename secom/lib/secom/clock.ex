@@ -9,8 +9,7 @@ defmodule Secom.Clock do
 
   deflf loop() do
     time = Time.utc_now()
-    cast_activate_group(:actor, %{:time => 1})
-    # cast_activate_group(:actor, %{:time => time.hour})
+    cast_activate_group(:actor, %{:time => time.hour})
     :timer.sleep(1000)
     loop()
   end
