@@ -98,7 +98,7 @@ defmodule Secom.Actor do
     cast_activate_group(:actor, %{:status => :normal})
   end
 
-  deflfp receive_msg(%Secom.Event{type: :sprinkler_stop_button, value: false}) do
+  deflfp receive_msg(%Secom.Event{type: :stop_button, value: false}) do
     # 何もしない
   end
 
