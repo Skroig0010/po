@@ -21,7 +21,8 @@ defmodule Secom.Joystick do
       :released
     end
 
-    Agent.update(Process.whereis(@joystick), fn _ -> {{up, down, left, right}, action} end)
+    Agent.update(Process.whereis(@joystick), fn _ -> {{false, false, false, false}, :released} end)
+    # Agent.update(Process.whereis(@joystick), fn _ -> {{up, down, left, right}, action} end)
   end
 
   @spec get_direction() :: direction
