@@ -25,6 +25,7 @@ defmodule Secom.Joystick do
       Agent.update(Process.whereis(@joystick), fn _ -> {{up, down, left, right}, action} end)
     catch
       x, e -> IO.puts "error on joystick: #{inspect e} : #{inspect x}"
+        IO.puts "joystick pid is #{Process.whereis(@joystick)}}"
     end
   end
 
