@@ -6,7 +6,6 @@ defmodule Secom.Sensor.SmokeSensor do
   def loop(pid) do
     try do
       event_list = Python.call(:get_events, [])
-      IO.inspect event_list
       
       [_action, direction] = if (length(event_list) > 0) do
         hd(event_list)
@@ -16,8 +15,6 @@ defmodule Secom.Sensor.SmokeSensor do
 
       send pid, %Secom.Event{type: :smoke, value: (direction == 'down')}
       :timer.sleep(200)
-      IO.puts "smoke_sensor updated"
-      IO.puts "node:#{inspect node()}, #{inspect direction}"
     catch
       _, e -> IO.puts "error: #{inspect e}"
         IO.puts "まだ起動してない"
