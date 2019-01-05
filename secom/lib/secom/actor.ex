@@ -8,6 +8,8 @@ defmodule Secom.Actor do
 
   def start(floor) do
     Python.init()
+      event_list = Python.call(:get_events, [])
+      IO.inspect event_list
     init_context([:actor, get_floor_atom(floor)])
     loop(floor)
     :timer.sleep(:infinity)
