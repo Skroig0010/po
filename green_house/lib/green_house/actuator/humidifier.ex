@@ -5,7 +5,7 @@ defmodule GreenHouse.Actuator.Humidifier do
   def start() do
     IO.puts "start humidifier"
     Process.register(self(), @humidifier)
-    loop()
+    loop(:off)
   end
 
   deflf update(), %{:humidity => :low} do
@@ -16,12 +16,20 @@ defmodule GreenHouse.Actuator.Humidifier do
     send Process.whereis(@humidifier), :off
   end
 
-  def loop() do
-    receive do
-      :on -> IO.puts "Humidifier activated"
+  def loop(switch) do
+    loop(receive do
+      :on ->
+        if(switch !== :on) do
+          IO.puts "Humidifier activated"
+        end
         Python.call(:"sense.set_pixel", [0, 7, 0, 255, 255])
-      :off -> IO.puts "Humidifier deactivated"
+        :on
+      :off -> 
+        if(switch !== :off) do
+          IO.puts "Humidifier deactivated"
+        end
         Python.call(:"sense.set_pixel", [0, 7, 0, 0, 0])
-    end
+        :off
+    end)
   end
 end

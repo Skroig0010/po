@@ -27,6 +27,7 @@ defmodule GreenHouse do
       Router.route(address, GreenHouse.Actuator.Heater, :start, [])
       Router.route(address, GreenHouse.Actuator.FanSystem, :start, [])
       Router.route(address, GreenHouse.Actuator.Window, :start, [])
+      Router.route(address, GreenHouse.Actuator.Sprinkler, :start, [])
       # sensor
       Router.route(address, GreenHouse.Sensor.MoistureSensor, :start, [actor_pid])
       Router.route(address, GreenHouse.Sensor.HumiditySensor, :start, [actor_pid])

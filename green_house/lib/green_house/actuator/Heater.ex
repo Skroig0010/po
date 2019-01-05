@@ -5,7 +5,7 @@ defmodule GreenHouse.Actuator.Heater do
   def start() do
     IO.puts "start heater"
     Process.register(self(), @heater)
-    loop()
+    loop(:off)
   end
 
   deflf update(), %{:state => :cold} do
@@ -16,12 +16,20 @@ defmodule GreenHouse.Actuator.Heater do
     send Process.whereis(@heater), :off
   end
 
-  def loop() do
-    receive do
-      :on -> IO.puts "heater activated"
+  def loop(switch) do
+    loop(receive do
+      :on -> 
+        if(switch !== :on) do
+          IO.puts "heater activated"
+        end
         Python.call(:"sense.set_pixel", [7, 0, 255, 0, 0])
-      :off -> IO.puts "heater deactivated"
+        :on
+      :off -> 
+        if(switch !== :off) do
+          IO.puts "heater deactivated"
+        end
         Python.call(:"sense.set_pixel", [7, 0, 0, 0, 0])
-    end
+        :off
+    end)
   end
 end

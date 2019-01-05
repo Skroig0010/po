@@ -7,12 +7,11 @@ defmodule GreenHouse.Sensor.MoistureSensor do
     try do
       {_, down, _, _} = GreenHouse.Joystick.get_direction()
       t = if(down) do
-        1.2
-      else
         0.5
+      else
+        1.2
       end
       send pid, %GreenHouse.Event{type: :moisture_sensor, value: t}
-      IO.puts "moisture"  <> ":" <> Atom.to_string(node()) <> ":" <> Integer.to_string(t)
       :timer.sleep(200)
     catch
       _, e -> IO.puts "error: #{inspect e}"

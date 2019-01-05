@@ -25,7 +25,7 @@ defmodule GreenHouse.Actor do
       # RainSensor
       # SoilTemperatureSensor
     catch
-      _, e -> IO.puts "error: #{inspect e}"
+      _, e -> IO.puts "error at actor loop: #{inspect e}"
     end
     loop(id)
   end
@@ -70,6 +70,11 @@ defmodule GreenHouse.Actor do
 
   deflfp receive_msg(_id, %GreenHouse.Event{type: :humidity_sensor, value: _val}) do
     cast_activate_layer(%{:humidity => :normal})
+  end
+
+  # default method
+  deflfp receive_msg(_id, msg) do
+    IO.puts "there is no function for the following message:#{inspect msg}"
   end
 
 end
