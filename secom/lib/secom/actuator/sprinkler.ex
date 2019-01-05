@@ -19,7 +19,7 @@ defmodule Secom.Actuator.Sprinkler do
   defp loop() do
     try do
       receive do
-        :on -> "sprinkler actuated"# actuate sprinkler
+        :on -> IO.puts "sprinkler actuated"# actuate sprinkler
         :off -> :none# deactuate sprinkler
       end
     catch
