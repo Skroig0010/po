@@ -26,6 +26,7 @@ defmodule Secom.MixProject do
       {:contextEX, path: "../contextEX"},
       {:router, path: "../router"},
       {:python, path: "../python"},
+      {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
     ]
   end
 end
