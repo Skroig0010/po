@@ -5,15 +5,9 @@ defmodule Secom.Sensor.StopButton do
   end
   def loop(pid) do
     try do
-      event_list = Python.call(:get_events, [])
-      
-      [action, _direction] = if (length(event_list) > 0) do
-        hd(event_list)
-      else
-        ['released', 'middle']
-      end
+      action = Secom.Joystick.get_action()
 
-      t = (action == 'pressed')
+      t = (action == :pressed)
       send pid, %Secom.Event{type: :stop_button, value: t}
       :timer.sleep(500)
     catch

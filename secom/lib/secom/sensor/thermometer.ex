@@ -5,15 +5,8 @@ defmodule Secom.Sensor.Thermometer do
   end
   def loop(pid) do
     try do
-      event_list = Python.call(:get_events, [])
-      
-      [_action, direction] = if (length(event_list) > 0) do
-        hd(event_list)
-      else
-        ['released', 'middle']
-      end
-
-      t = if(direction == 'up') do
+      {up, _, _, _} = Secom.Joystick.get_direction()
+      t = if(up) do
         50
       else
         30

@@ -8,6 +8,7 @@ defmodule Secom.Actor do
 
   def start(floor) do
     Python.init()
+    Secom.Joystick.init()
     init_context([:actor, get_floor_atom(floor)])
     loop(floor)
     :timer.sleep(:infinity)
@@ -19,6 +20,7 @@ defmodule Secom.Actor do
         receive_msg(msg)
     end
 
+    Secom.Joystick.update()
     Secom.Actuator.Sprinkler.update()
     Secom.Actuator.Shutter.update()
     Secom.Actuator.ReportingDevice.update()
@@ -88,7 +90,7 @@ defmodule Secom.Actor do
   # updater
   # センサーをjoystickで代用してるのでjoystickの入力がないとloop()が止まってしまい、コンテキスト変化に対応できない
   # ちゃんとしたセンサーを乗せたら必要なくなる
-  deflfp receive_msg(%Secom.Event{type: :updater, value: val}) do 
+  deflfp receive_msg(%Secom.Event{type: :updater, value: _val}) do 
     Python.call(:"sense.set_pixel", [3, 3, 255, 255, 255])
   end
 

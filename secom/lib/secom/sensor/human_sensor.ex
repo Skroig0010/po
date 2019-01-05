@@ -5,15 +5,9 @@ defmodule Secom.Sensor.HumanSensor do
   end
   def loop(pid) do
     try do
-      event_list = Python.call(:get_events, [])
-      
-      [_action, direction] = if (length(event_list) > 0) do
-        hd(event_list)
-      else
-        ['released', 'middle']
-      end
+      {_, _, left, _} = Secom.Joystick.get_direction()
 
-      send pid, %Secom.Event{type: :human, value: (direction == 'left')}
+      send pid, %Secom.Event{type: :human, value: left}
       :timer.sleep(500)
     catch
       _, e -> IO.puts "error: #{inspect e}"

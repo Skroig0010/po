@@ -5,15 +5,9 @@ defmodule Secom.Sensor.SmokeSensor do
   end
   def loop(pid) do
     try do
-      event_list = Python.call(:get_events, [])
-      
-      [_action, direction] = if (length(event_list) > 0) do
-        hd(event_list)
-      else
-        ['released', 'middle']
-      end
+      {_, down, _, _} = Secom.Joystick.get_direction()
 
-      send pid, %Secom.Event{type: :smoke, value: (direction == 'down')}
+      send pid, %Secom.Event{type: :smoke, value: down}
       :timer.sleep(500)
     catch
       _, e -> IO.puts "error: #{inspect e}"
