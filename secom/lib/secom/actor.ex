@@ -35,7 +35,7 @@ defmodule Secom.Actor do
     try do
       receive_and_actuate()
     catch
-      x, e -> IO.puts "error: #{inspect e} : #{x}"
+      x, e -> IO.puts "error on actor emergency loop: #{inspect e} : #{inspect x}"
     end
     loop(floor)
   end
@@ -49,7 +49,7 @@ defmodule Secom.Actor do
     try do
       receive_and_actuate()
     catch
-      x, e -> IO.puts "error: #{inspect e} : #{x}"
+      x, e -> IO.puts "error on actor loop: #{inspect e} : #{inspect x}"
     end
     loop(floor)
   end
@@ -106,7 +106,6 @@ defmodule Secom.Actor do
 
   # default method
   deflfp receive_msg(msg) do
-    IO.puts "there is no function for the following message."
-    IO.inspect msg
+    IO.puts "there is no function for the following message:#{inspect msg}"
   end
 end
