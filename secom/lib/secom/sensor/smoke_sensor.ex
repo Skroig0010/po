@@ -5,7 +5,14 @@ defmodule Secom.Sensor.SmokeSensor do
   end
   def loop(pid) do
     try do
-      [_action, direction] = Python.call(:wait_for_event, [])
+      event_list = Python.call(:get_events, [])
+      
+      [_action, direction] = if (length(event_list) > 0) do
+        hd(event_list)
+      else
+        ['released', 'middle']
+      end
+
       send pid, %Secom.Event{type: :smoke, value: (direction == 'down')}
       :timer.sleep(200)
       IO.puts "smoke_sensor updated"

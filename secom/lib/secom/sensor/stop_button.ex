@@ -5,7 +5,14 @@ defmodule Secom.Sensor.StopButton do
   end
   def loop(pid) do
     try do
-      [action, _direction] = Python.call(:wait_for_event, [])
+      event_list = Python.call(:get_events, [])
+      
+      [action, _direction] = if (length(event_list) > 0) do
+        hd(event_list)
+      else
+        ['released', 'middle']
+      end
+
       t = (action == 'pressed')
       send pid, %Secom.Event{type: :stop_button, value: t}
       IO.puts "stop_button updated"

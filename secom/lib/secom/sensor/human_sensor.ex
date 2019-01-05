@@ -5,7 +5,14 @@ defmodule Secom.Sensor.HumanSensor do
   end
   def loop(pid) do
     try do
-      [_action, direction] = Python.call(:wait_for_event, [])
+      event_list = Python.call(:get_events, [])
+      
+      [_action, direction] = if (length(event_list) > 0) do
+        hd(event_list)
+      else
+        ['released', 'middle']
+      end
+
       send pid, %Secom.Event{type: :human, value: (direction == 'left')}
       :timer.sleep(200)
       IO.puts "human_sensor updated"
