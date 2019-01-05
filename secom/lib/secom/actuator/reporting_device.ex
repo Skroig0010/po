@@ -24,7 +24,7 @@ defmodule Secom.Actuator.ReportingDevice do
     try do
       receive do
         :on -> IO.puts "reporting suspisious person"# close shutter
-        :off -> :none# open shutter
+        :off -> :none # open shutter
       end
     catch
       _, e -> IO.puts "error: #{inspect e}"

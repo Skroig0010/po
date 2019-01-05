@@ -1,6 +1,7 @@
 defmodule Secom do
   @type actor :: {id :: integer, floor :: integer}
-  @actors [{160, 1}, {161, 1}, {162, 2}, {163, 2}]
+  # @actors [{160, 1}, {161, 1}, {162, 2}, {163, 2}]
+  @actors [{161, 1}]
   @spec start() :: pid
   def start() do
     ContextEX.start()

@@ -9,7 +9,7 @@ defmodule Secom.Sensor.StopButton do
 
       t = (action == :pressed)
       send pid, %Secom.Event{type: :stop_button, value: t}
-      :timer.sleep(500)
+      :timer.sleep(200)
     catch
       _, e -> IO.puts "error: #{inspect e}"
         IO.puts "まだ起動してない"

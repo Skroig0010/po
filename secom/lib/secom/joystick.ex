@@ -10,13 +10,12 @@ defmodule Secom.Joystick do
 
   def update() do
     event_list = Python.call(:get_events, [])
-    IO.inspect event_list
 
-    left = Enum.any?(event_list, fn [dir, _] -> dir == 'left' end)
-    right = Enum.any?(event_list, fn [dir, _] -> dir == 'right' end)
-    up = Enum.any?(event_list, fn [dir, _] -> dir == 'up' end)
-    down = Enum.any?(event_list, fn [dir, _] -> dir == 'down' end)
-    action = if(Enum.any?(event_list, fn [_, act] -> act == 'pressed' end)) do
+    left = Enum.any?(event_list, fn [_, dir] -> dir == 'left' end)
+    right = Enum.any?(event_list, fn [_, dir] -> dir == 'right' end)
+    up = Enum.any?(event_list, fn [_, dir] -> dir == 'up' end)
+    down = Enum.any?(event_list, fn [_, dir] -> dir == 'down' end)
+    action = if(Enum.any?(event_list, fn [act, _] -> act == 'pressed' || act == 'held' end)) do
       :pressed
     else
       :released
