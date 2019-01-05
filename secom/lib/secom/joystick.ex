@@ -21,17 +21,17 @@ defmodule Secom.Joystick do
       :released
     end
 
-    Agent.update(@joystick, fn _ -> {{up, down, left, right}, action} end)
+    Agent.update(Process.whereis(@joystick), fn _ -> {{up, down, left, right}, action} end)
   end
 
   @spec get_direction() :: direction
   def get_direction() do 
-    Agent.get(@joystick, fn [_, dir] -> dir end)
+    Agent.get(Process.whereis(@joystick), fn [_, dir] -> dir end)
   end
 
   @spec get_action() :: action
   def get_action() do
-    Agent.get(@joystick, fn [act, _] -> act end)
+    Agent.get(Process.whereis(@joystick), fn [act, _] -> act end)
   end
 
 end
