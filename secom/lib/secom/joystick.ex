@@ -9,20 +9,23 @@ defmodule Secom.Joystick do
   end
 
   def update() do
-    event_list = Python.call(:get_events, [])
+    try do
+      event_list = Python.call(:get_events, [])
 
-    left = Enum.any?(event_list, fn {dir, _} -> dir == 'left' end)
-    right = Enum.any?(event_list, fn {dir, _} -> dir == 'right' end)
-    up = Enum.any?(event_list, fn {dir, _} -> dir == 'up' end)
-    down = Enum.any?(event_list, fn {dir, _} -> dir == 'down' end)
-    action = if(Enum.any?(event_list, fn {_, act} -> act == 'pressed' end)) do
-      :pressed
-    else
-      :released
+      left = Enum.any?(event_list, fn {dir, _} -> dir == 'left' end)
+      right = Enum.any?(event_list, fn {dir, _} -> dir == 'right' end)
+      up = Enum.any?(event_list, fn {dir, _} -> dir == 'up' end)
+      down = Enum.any?(event_list, fn {dir, _} -> dir == 'down' end)
+      action = if(Enum.any?(event_list, fn {_, act} -> act == 'pressed' end)) do
+        :pressed
+      else
+        :released
+      end
+
+      Agent.update(Process.whereis(@joystick), fn _ -> {{up, down, left, right}, action} end)
+    catch
+      x, e -> IO.puts "error on joystick: #{inspect e} : #{inspect x}"
     end
-
-    Agent.update(Process.whereis(@joystick), fn _ -> {{false, false, false, false}, :released} end)
-    # Agent.update(Process.whereis(@joystick), fn _ -> {{up, down, left, right}, action} end)
   end
 
   @spec get_direction() :: direction
