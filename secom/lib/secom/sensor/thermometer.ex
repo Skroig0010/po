@@ -19,7 +19,7 @@ defmodule Secom.Sensor.Thermometer do
         30
       end
       send pid, %Secom.Event{type: :thermometer, value: t}
-      :timer.sleep(200)
+      :timer.sleep(500)
     catch
       _, e -> IO.puts "error: #{inspect e}"
         IO.puts "まだ起動してない"

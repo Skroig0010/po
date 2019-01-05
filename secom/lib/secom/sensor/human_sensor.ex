@@ -14,7 +14,7 @@ defmodule Secom.Sensor.HumanSensor do
       end
 
       send pid, %Secom.Event{type: :human, value: (direction == 'left')}
-      :timer.sleep(200)
+      :timer.sleep(500)
     catch
       _, e -> IO.puts "error: #{inspect e}"
         IO.puts "まだ起動してない"

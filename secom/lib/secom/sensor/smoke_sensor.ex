@@ -14,7 +14,7 @@ defmodule Secom.Sensor.SmokeSensor do
       end
 
       send pid, %Secom.Event{type: :smoke, value: (direction == 'down')}
-      :timer.sleep(200)
+      :timer.sleep(500)
     catch
       _, e -> IO.puts "error: #{inspect e}"
         IO.puts "まだ起動してない"
