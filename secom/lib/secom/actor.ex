@@ -14,7 +14,6 @@ defmodule Secom.Actor do
   end
 
   defp receive_and_actuate() do
-    IO.puts "#{inspect get_activelayers()} in #{inspect Node.self()}"
     receive do
       msg ->
         receive_msg(msg)
@@ -90,7 +89,6 @@ defmodule Secom.Actor do
   # センサーをjoystickで代用してるのでjoystickの入力がないとloop()が止まってしまい、コンテキスト変化に対応できない
   # ちゃんとしたセンサーを乗せたら必要なくなる
   deflfp receive_msg(%Secom.Event{type: :updater, value: val}) do 
-    IO.inspect "actor updated" <> Integer.to_string(val)
     Python.call(:"sense.set_pixel", [3, 3, 255, 255, 255])
   end
 
