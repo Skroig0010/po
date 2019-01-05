@@ -6,6 +6,7 @@ defmodule Secom.Sensor.StopButton do
   def loop(pid) do
     try do
       event_list = Python.call(:get_events, [])
+      IO.inspect event_list
       
       [action, _direction] = if (length(event_list) > 0) do
         hd(event_list)
