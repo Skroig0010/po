@@ -8,10 +8,12 @@ defmodule GreenHouse do
   2->3
   """
   @type actor :: {address :: integer, actor_id :: atom}
-  @actors [{160, :"0"}, {161, :"1"}, {162, :"2"}, {163, :"3"}]
+  # @actors [{160, :"0"}, {161, :"1"}, {162, :"2"}, {163, :"3"}]
+  @actors [{161, :"1"}]
 
   @type fan :: [{from :: atom, to :: atom, actor_id :: atom}]
-  @fan_directions [{:"0", :"1", :"0"}]
+  # @fan_directions [{:"0", :"1", :"0"}]
+  @fan_directions []
 
   def start() do
     ContextEX.start()

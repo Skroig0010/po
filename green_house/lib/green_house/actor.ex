@@ -2,6 +2,7 @@ defmodule GreenHouse.Actor do
   use ContextEX
   def start(id) do
     Python.init()
+    GreenHouse.Joystick.init()
     init_context([:actor, id])
     loop(id)
   end
@@ -14,6 +15,7 @@ defmodule GreenHouse.Actor do
           receive_msg(id, msg)
       end
 
+      GreenHouse.Joystick.update()
       GreenHouse.Actuator.FanSystem.update()
       GreenHouse.Actuator.Heater.update()
       GreenHouse.Actuator.Humidifier.update()

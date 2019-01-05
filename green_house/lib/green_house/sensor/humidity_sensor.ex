@@ -5,8 +5,8 @@ defmodule GreenHouse.Sensor.HumiditySensor do
   end
   def loop(pid) do
     try do
-      [_acton, direction] = Python.call(:wait_for_event, [])
-      t = if(direction == 'left') do
+      {_, _, left, _} = GreenHouse.Joystick.get_direction()
+      t = if(left) do
         0.7
       else
         0.2

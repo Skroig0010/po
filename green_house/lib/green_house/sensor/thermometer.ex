@@ -5,8 +5,8 @@ defmodule GreenHouse.Sensor.Thermometer do
   end
   def loop(pid) do
     try do
-      [_acton, direction] = Python.call(:wait_for_event, [])
-      t = if(direction == 'up') do
+      {up, _, _, _} = GreenHouse.Joystick.get_direction()
+      t = if(up) do
         50
       else
         30

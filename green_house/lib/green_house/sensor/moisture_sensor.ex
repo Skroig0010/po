@@ -5,8 +5,8 @@ defmodule GreenHouse.Sensor.MoistureSensor do
   end
   def loop(pid) do
     try do
-      [_acton, direction] = Python.call(:wait_for_event, [])
-      t = if(direction == 'down') do
+      {_, down, _, _} = GreenHouse.Joystick.get_direction()
+      t = if(down) do
         1.2
       else
         0.5
