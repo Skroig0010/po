@@ -8,7 +8,7 @@ defmodule Secom.Actuator.Display do
     loop("")
   end
 
-  deflf update(), %{:suspisious_person => true} do
+  deflf update(), %{:suspicious_person => true} do
     send Process.whereis(@display), "reporting suspicious person"
   end
 

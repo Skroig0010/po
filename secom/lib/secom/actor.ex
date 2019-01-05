@@ -27,6 +27,11 @@ defmodule Secom.Actor do
   end
 
   deflf loop(floor), %{:suspicious_person => true} do
+    try do
+      receive_and_actuate()
+    catch
+      x, e -> IO.puts "error on actor emergency loop: #{inspect e} : #{inspect x}"
+    end
     loop(floor)
   end
 
