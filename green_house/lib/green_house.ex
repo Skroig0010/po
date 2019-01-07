@@ -54,11 +54,13 @@ defmodule GreenHouse do
     # sinkノードの
     map = get_activelayers()
     @fan_directions |> Enum.map(fn {from, to, actor_id} ->
-      if(temperature_compare(map |> Map.get(from), map |> Map.get(to))) do
+      if(temperature_compare(map |> Map.get(from, :normal), map |> Map.get(to, :normal))) do
         cast_activate_group(actor_id, %{:temperature_diff => true})
       else
         cast_activate_group(actor_id, %{:temperature_diff => false})
       end
     end)
+    :timer.sleep(1000)
+    loop()
   end
 end
