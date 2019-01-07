@@ -4,11 +4,12 @@ defmodule GreenHouse.Joystick do
   @type direction :: {up :: boolean, down :: boolean, left :: boolean, right :: boolean}
   @type action :: :pressed | :released
 
-  def init() do
+  def start() do
     Agent.start(fn -> {{false, false, false, false}, :released} end, [name: @joystick])
+    update()
   end
 
-  def update() do
+  defp update() do
     event_list = Python.call(:get_events, [])
 
     left = Enum.any?(event_list, fn [_, dir] -> dir == 'left' end)
@@ -24,6 +25,9 @@ defmodule GreenHouse.Joystick do
     if(Process.whereis(@joystick) != nil) do
       Agent.update(Process.whereis(@joystick), fn _ -> {{up, down, left, right}, action} end)
     end
+
+    :timer.sleep(1000)
+    update()
   end
 
   @spec get_direction() :: direction

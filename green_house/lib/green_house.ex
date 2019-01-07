@@ -22,6 +22,7 @@ defmodule GreenHouse do
     for {address, id} <- @actors do
       IO.puts "Address:" <> Integer.to_string(address) <> ", id:" <> Atom.to_string(id)
       actor_pid = Router.route(address, GreenHouse.Actor, :start, [id])
+      Router.route(address, GreenHouse.Joystick, :start, [])
       # actuator
       Router.route(address, GreenHouse.Actuator.Humidifier, :start, [])
       Router.route(address, GreenHouse.Actuator.Heater, :start, [])
@@ -33,6 +34,7 @@ defmodule GreenHouse do
       Router.route(address, GreenHouse.Sensor.HumiditySensor, :start, [actor_pid])
       Router.route(address, GreenHouse.Sensor.Thermometer, :start, [actor_pid])
     end
+    spawn_link(GreenHouse.Date, :start, [])
 
     init_context(:sink)
     loop()

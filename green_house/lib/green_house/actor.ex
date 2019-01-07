@@ -1,8 +1,8 @@
 defmodule GreenHouse.Actor do
   use ContextEX
+
   def start(id) do
     Python.init()
-    GreenHouse.Joystick.init()
     init_context([:actor, id])
     loop(id)
   end
@@ -15,7 +15,6 @@ defmodule GreenHouse.Actor do
           receive_msg(id, msg)
       end
 
-      GreenHouse.Joystick.update()
       GreenHouse.Actuator.FanSystem.update()
       GreenHouse.Actuator.Heater.update()
       GreenHouse.Actuator.Humidifier.update()
@@ -40,6 +39,7 @@ defmodule GreenHouse.Actor do
     end
   end
 
+  # 以下は春、夏
   deflfp receive_msg(id, %GreenHouse.Event{type: :thermometer, value: val}) when val > 28 do
     if(val > 30) do
       # 30℃を超えたら全ての窓を開ける
@@ -56,7 +56,7 @@ defmodule GreenHouse.Actor do
     cast_activate_group(:sink, %{id => :normal})
   end
 
-  deflfp receive_msg(_id, %GreenHouse.Event{type: :moisture_sensor, value: val}) when val < 20 do
+  deflfp receive_msg(_id, %GreenHouse.Event{type: :moisture_sensor, value: val}) when val < 0.6 do
     cast_activate_layer(%{:soil_moisture => :low})
   end
 
