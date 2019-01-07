@@ -49,14 +49,11 @@ defmodule GreenHouse do
   end
 
   def loop() do
-    # こんな使い方していいのか？
-    # 10分に1回調べるとかしたいんだけど10分間ファン点きっぱなしになる
-    # sinkノードの
+    # 10分に1回調べるとかしたいんだけど10分間ファン点きっぱなしになるから更新頻度を可変にするべきか
     map = get_activelayers()
     @fan_directions |> Enum.map(fn {from, to, actor_id} ->
       from_state = map |> Map.get(from, :normal)
       to_state = map |> Map.get(to, :normal)
-      IO.puts "#{inspect self()}: from:#{inspect from_state}, to:#{inspect to_state}"
       if(temperature_compare(from_state, to_state)) do
         cast_activate_group(actor_id, %{:temperature_diff => true})
       else

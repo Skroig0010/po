@@ -7,9 +7,10 @@ defmodule GreenHouse.Date do
     loop()
   end
 
-  deflf loop() do
+  deflfp loop() do
     date = Date.utc_today()
     cast_activate_group(:actor, %{:month => date.month})
+    cast_activate_group(:sink, %{:month => date.month})
     :timer.sleep(10000)
     loop()
   end

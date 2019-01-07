@@ -34,6 +34,8 @@ defmodule GreenHouse.Actor do
   deflfp receive_msg(id, %GreenHouse.Event{type: :thermometer, value: val}), %{:month => month} when month >= 9 or month < 4 do
     if(val < 5) do
       cast_activate_group(:sink, %{id => :cold})
+      # ヒーターあるなら付ける
+      cast_activate_layer(%{:state => :cold})
     else
       cast_activate_group(:sink, %{id => :normal})
     end
