@@ -9,10 +9,10 @@ defmodule GreenHouse.Sensor.HumiditySensor do
       t = if(left) do
         0.2
       else
-        0.7
+        1.0
       end
       send pid, %GreenHouse.Event{type: :humidity_sensor, value: t}
-      :timer.sleep(200)
+      :timer.sleep(1000)
     catch
       _, e -> IO.puts "error: #{inspect e}"
         IO.puts "まだ起動してない"

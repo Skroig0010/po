@@ -5,14 +5,14 @@ defmodule GreenHouse.Sensor.MoistureSensor do
   end
   def loop(pid) do
     try do
-      {_, down, _, _} = GreenHouse.Joystick.get_direction()
-      t = if(down) do
+      {_, _, _, right} = GreenHouse.Joystick.get_direction()
+      t = if(right) do
         0.5
       else
-        1.2
+        1.0
       end
       send pid, %GreenHouse.Event{type: :moisture_sensor, value: t}
-      :timer.sleep(200)
+      :timer.sleep(1000)
     catch
       _, e -> IO.puts "error: #{inspect e}"
         IO.puts "まだ起動してない"
