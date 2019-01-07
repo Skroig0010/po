@@ -38,6 +38,8 @@ defmodule GreenHouse.Actor do
       cast_activate_layer(%{:state => :cold})
     else
       cast_activate_group(:sink, %{id => :normal})
+      # ヒーターあるなら消す
+      cast_activate_layer(%{:state => :normal})
     end
   end
 
