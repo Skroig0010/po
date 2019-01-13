@@ -1,6 +1,6 @@
 defmodule GreenHouse.Sensor.Thermometer do
   def start(pid) do
-    IO.inspect "start thermometer"
+    IO.puts "start thermometer"
     loop(pid)
   end
   def loop(pid) do
