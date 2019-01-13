@@ -13,36 +13,23 @@ defmodule Secom.Actor do
     loop(floor)
   end
 
-  defp receive_and_actuate() do
-    receive do
-      msg ->
-        receive_msg(msg)
-    end
-
-    Secom.Joystick.update()
-    Secom.Actuator.Sprinkler.update()
-    Secom.Actuator.Shutter.update()
-    Secom.Actuator.ReportingDevice.update()
-    Secom.Actuator.Display.update()
-  end
-
-  deflf loop(floor), %{:status => :emergency} do
-    try do
-      receive_and_actuate()
-    catch
-      x, e -> IO.puts "error at actor emergency loop: #{inspect e} : #{inspect x}"
-    end
-    loop(floor)
-  end
-
-  deflf loop(floor), %{:temperature => :high, :smoke => true} do
+  deflf loop(floor), %{:temperature => :high, :smoke => true, :status => status} when status !== :emergency do
     cast_activate_group(get_floor_atom(floor), %{:status => :emergency})
     loop(floor)
   end
 
   deflf loop(floor) do
     try do
-      receive_and_actuate()
+      receive do
+        msg ->
+          receive_msg(msg)
+      end
+
+      Secom.Joystick.update()
+      Secom.Actuator.Sprinkler.update()
+      Secom.Actuator.Shutter.update()
+      Secom.Actuator.ReportingDevice.update()
+      Secom.Actuator.Display.update()
     catch
       x, e -> IO.puts "error at actor loop: #{inspect e} : #{inspect x}"
     end
