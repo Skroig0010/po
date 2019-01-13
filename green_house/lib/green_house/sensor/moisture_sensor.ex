@@ -1,6 +1,6 @@
 defmodule GreenHouse.Sensor.MoistureSensor do
   def start(pid) do
-    IO.inspect "start moisture sensor"
+    IO.puts "start moisture sensor"
     loop(pid)
   end
   def loop(pid) do
