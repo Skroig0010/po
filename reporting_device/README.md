@@ -1,4 +1,4 @@
-# Secom
+# ReportingDevice
 
 **TODO: Add description**
 

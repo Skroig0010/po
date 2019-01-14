@@ -1,4 +1,4 @@
-defmodule Secom.MixProject do
+defmodule ReportingDevice.MixProject do
   use Mix.Project
 
   def project do
