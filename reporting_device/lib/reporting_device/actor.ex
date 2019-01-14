@@ -3,8 +3,7 @@ defmodule ReportingDevice.Actor do
 
   def start() do
     Python.init()
-    ReportingDevice.Joystick.init()
-    init_context(nil)
+    init_context([:actor])
     loop()
   end
 
@@ -15,7 +14,6 @@ defmodule ReportingDevice.Actor do
           receive_msg(msg)
       end
 
-      ReportingDevice.Joystick.update()
       ReportingDevice.Actuator.Display.update()
     catch
       x, e -> IO.puts "error at actor loop: #{inspect e} : #{inspect x}"
@@ -25,15 +23,18 @@ defmodule ReportingDevice.Actor do
 
   # human sensor
   deflfp receive_msg(%ReportingDevice.Event{type: :human, value: val}), %{:time => time} when val == true and (time > 23 or time < 5) do
+    Python.call(:"sense.set_pixel", [0, 3, 255, 255, 255])
     cast_activate_group(:sink, %{:suspicious_person => true})
+    cast_activate_layer(%{:suspicious_person => true})
   end
 
-  deflfp receive_msg(%ReportingDevice.Event{type: :human, value: _}) do
+  deflfp receive_msg(%ReportingDevice.Event{type: :human, value: _}), %{:suspicious_person => true} do
+    Python.call(:"sense.set_pixel", [0, 3, 0, 0, 0])
     cast_activate_group(:sink, %{:suspicious_person => false})
+    cast_activate_layer(%{:suspicious_person => false})
   end
 
-  # default method
+  # 何もしない
   deflfp receive_msg(msg) do
-    IO.puts "there is no function for the following message:#{inspect msg}"
   end
 end

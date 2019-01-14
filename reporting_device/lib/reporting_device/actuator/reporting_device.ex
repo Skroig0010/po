@@ -8,10 +8,10 @@ defmodule ReportingDevice.Actuator.ReportingDevice do
     loop()
   end
 
-  deflf update(), %{:suspisious_person => true, :reporting => :done} do
+  deflf update(), %{:suspicious_person => true, :reporting => :done} do
   end
 
-  deflf update(), %{:suspisious_person => true} do
+  deflf update(), %{:suspicious_person => true} do
     reporter = Process.whereis(@reporter)
     unless(reporter === nil) do
       send reporter, :on
@@ -20,7 +20,7 @@ defmodule ReportingDevice.Actuator.ReportingDevice do
   end
 
   deflf update() do
-    cast_activate_layer(%{:reporting => :not_reported})
+    cast_activate_layer(%{:reporting => :yet})
   end
 
   defp loop() do
