@@ -1,4 +1,5 @@
 defmodule ReportingDevice do
+  use ContextEX
   @type actor :: id :: integer
   @actors [160, 161, 162, 163]
 
@@ -6,11 +7,12 @@ defmodule ReportingDevice do
   def start() do
     ContextEX.start()
     Python.init()
+    init_context(:sink)
     Router.connect_all(@actors)
     for id <- @actors do
       IO.inspect id
       Router.route(id, ReportingDevice.Actuator.Display, :start, [])
-      pid = Router.route(id, ReportingDevice.Actor, :start, [false])
+      pid = Router.route(id, ReportingDevice.Actor, :start, [])
       Router.route(id, ReportingDevice.Sensor.HumanSensor, :start, [pid])
     end
     spawn_link(ReportingDevice.Actuator.ReportingDevice, :start, [])

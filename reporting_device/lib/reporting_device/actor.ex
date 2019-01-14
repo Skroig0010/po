@@ -1,14 +1,10 @@
 defmodule ReportingDevice.Actor do
   use ContextEX
 
-  def start(is_sink) do
+  def start() do
     Python.init()
     ReportingDevice.Joystick.init()
-    init_context(if(is_sink) do
-      :sink
-    else
-      nil
-    end)
+    init_context(nil)
     loop()
   end
 
