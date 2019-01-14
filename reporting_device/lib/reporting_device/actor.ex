@@ -20,7 +20,6 @@ defmodule ReportingDevice.Actor do
       end
 
       ReportingDevice.Joystick.update()
-      ReportingDevice.Actuator.ReportingDevice.update()
       ReportingDevice.Actuator.Display.update()
     catch
       x, e -> IO.puts "error at actor loop: #{inspect e} : #{inspect x}"
@@ -30,11 +29,11 @@ defmodule ReportingDevice.Actor do
 
   # human sensor
   deflfp receive_msg(%ReportingDevice.Event{type: :human, value: val}), %{:time => time} when val == true and (time > 23 or time < 5) do
-    cast_activate_layer(%{:suspicious_person => true})
+    cast_activate_group(:sink, %{:suspicious_person => true})
   end
 
   deflfp receive_msg(%ReportingDevice.Event{type: :human, value: _}) do
-    cast_activate_layer(%{:suspicious_person => false})
+    cast_activate_group(:sink, %{:suspicious_person => false})
   end
 
   # default method
