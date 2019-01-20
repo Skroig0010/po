@@ -8,7 +8,8 @@ defmodule ReportingDevice.Actuator.ReportingDevice do
     loop()
   end
 
-  deflf update(), %{:suspicious_person => true, :reporting => :done} do
+  deflf update(), 
+    %{:suspicious_person => true, :reporting => :done} do
   end
 
   deflf update(), %{:suspicious_person => true} do
@@ -26,7 +27,8 @@ defmodule ReportingDevice.Actuator.ReportingDevice do
   defp loop() do
     try do
       receive do
-        :on -> IO.puts "reporting suspisious person"# close shutter
+        :on -> IO.puts "reporting suspisious person"
+          # close shutter
         :off -> :none # open shutter
       end
     catch

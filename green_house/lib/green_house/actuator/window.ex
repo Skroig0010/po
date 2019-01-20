@@ -8,7 +8,7 @@ defmodule GreenHouse.Actuator.Window do
     loop(:off)
   end
 
-  deflf update(), %{:state => :hot} do
+  deflf update(), %{:temperature => :hot} do
     send Process.whereis(@window), :on
   end
 

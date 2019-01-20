@@ -15,13 +15,6 @@ defmodule ReportingDevice.Actuator.Display do
     end
   end
 
-  deflf update(), %{:status => :emergency} do
-    pid = Process.whereis(@display)
-    unless(pid === nil) do
-      send pid, "emergency"
-    end
-  end
-
   deflf update() do
     pid = Process.whereis(@display)
     unless(pid === nil) do
