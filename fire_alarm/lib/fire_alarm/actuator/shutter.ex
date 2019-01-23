@@ -1,4 +1,4 @@
-defmodule Secom.Actuator.Shutter do
+defmodule FireAlarm.Actuator.Shutter do
   use ContextEX
   @shutter :shutter_pid
 

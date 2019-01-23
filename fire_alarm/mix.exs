@@ -1,4 +1,4 @@
-defmodule Secom.MixProject do
+defmodule FireAlarm.MixProject do
   use Mix.Project
 
   def project do

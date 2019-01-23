@@ -7,7 +7,7 @@ defmodule ReportingDevice.Actor do
     loop()
   end
 
-  deflf loop() do
+  def loop() do
     try do
       receive do
         msg ->

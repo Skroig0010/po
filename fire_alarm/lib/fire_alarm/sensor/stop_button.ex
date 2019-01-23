@@ -1,13 +1,14 @@
-defmodule Secom.Sensor.HumanSensor do
+defmodule FireAlarm.Sensor.StopButton do
   def start(pid) do
-    IO.inspect "human 0"
+    IO.inspect "button 0"
     loop(pid)
   end
   def loop(pid) do
     try do
-      {_, _, left, _} = Secom.Joystick.get_direction()
+      action = FireAlarm.Joystick.get_action()
 
-      send pid, %Secom.Event{type: :human, value: left}
+      t = (action == :pressed)
+      send pid, %FireAlarm.Event{type: :stop_button, value: t}
       :timer.sleep(200)
     catch
       _, e -> IO.puts "error: #{inspect e}"

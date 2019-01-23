@@ -1,4 +1,4 @@
-defmodule Secom.Actuator.Display do
+defmodule FireAlarm.Actuator.Display do
   use ContextEX
   @display :display_pid
 
@@ -6,10 +6,6 @@ defmodule Secom.Actuator.Display do
     IO.inspect "display0"
     Process.register(self(), @display)
     loop("")
-  end
-
-  deflf update(), %{:suspicious_person => true} do
-    send Process.whereis(@display), "reporting"
   end
 
   deflf update(), %{:status => :emergency} do

@@ -1,4 +1,4 @@
-defmodule Secom.Clock do
+defmodule FireAlarm.Clock do
   use ContextEX
 
   def start() do

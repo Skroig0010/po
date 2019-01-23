@@ -1,4 +1,4 @@
-defmodule Secom.Actor do
+defmodule FireAlarm.Actor do
   use ContextEX
 
   @spec get_floor_atom(integer) :: atom
@@ -8,7 +8,7 @@ defmodule Secom.Actor do
 
   def start(floor) do
     Python.init()
-    Secom.Joystick.init()
+    FireAlarm.Joystick.init()
     init_context([:actor, get_floor_atom(floor)])
     loop(floor)
   end
@@ -25,11 +25,10 @@ defmodule Secom.Actor do
           receive_msg(msg)
       end
 
-      Secom.Joystick.update()
-      Secom.Actuator.Sprinkler.update()
-      Secom.Actuator.Shutter.update()
-      Secom.Actuator.ReportingDevice.update()
-      Secom.Actuator.Display.update()
+      FireAlarm.Joystick.update()
+      FireAlarm.Actuator.Sprinkler.update()
+      FireAlarm.Actuator.Shutter.update()
+      FireAlarm.Actuator.Display.update()
     catch
       x, e -> IO.puts "error at actor loop: #{inspect e} : #{inspect x}"
     end
@@ -37,57 +36,46 @@ defmodule Secom.Actor do
   end
 
   # thermometer
-  deflfp receive_msg(%Secom.Event{type: :thermometer, value: val}) when val > 40 do
+  defp receive_msg(%FireAlarm.Event{type: :thermometer, value: val}) when val > 40 do
     Python.call(:"sense.set_pixel", [0, 0, rem(trunc(val * 100), 255), 0, 255])
     cast_activate_layer(%{:temperature => :high}) 
   end
 
-  deflfp receive_msg(%Secom.Event{type: :thermometer, value: val}) when val <= 40 do 
+  defp receive_msg(%FireAlarm.Event{type: :thermometer, value: val}) when val <= 40 do 
     Python.call(:"sense.set_pixel", [0, 0, rem(trunc(val * 100), 255), 255, 255])
     cast_activate_layer(%{:temperature => :normal})
   end
 
   # smoke sensor
-  deflfp receive_msg(%Secom.Event{type: :smoke, value: val}) when val == true do
+  defp receive_msg(%FireAlarm.Event{type: :smoke, value: val}) when val == true do
     Python.call(:"sense.set_pixel", [0, 7, 255, 0, 255])
     cast_activate_layer(%{:smoke => true}) 
   end
 
-  deflfp receive_msg(%Secom.Event{type: :smoke, value: val}) when val == false do 
+  defp receive_msg(%FireAlarm.Event{type: :smoke, value: val}) when val == false do 
     Python.call(:"sense.set_pixel", [0, 7, 0, 255, 255])
     cast_activate_layer(%{:smoke => false})
-  end
-
-  # human sensor
-  deflfp receive_msg(%Secom.Event{type: :human, value: val}), %{:time => time} when val == true and (time > 23 or time < 5) do
-    Python.call(:"sense.set_pixel", [0, 3, 255, 255, 255])
-    cast_activate_layer(%{:suspicious_person => true})
-  end
-
-  deflfp receive_msg(%Secom.Event{type: :human, value: _}) do
-    Python.call(:"sense.set_pixel", [0, 3, 0, 0, 0])
-    cast_activate_layer(%{:suspicious_person => false})
   end
 
   # updater
   # センサーをjoystickで代用してるのでjoystickの入力がないとloop()が止まってしまい、コンテキスト変化に対応できない
   # ちゃんとしたセンサーを乗せたら必要なくなる
-  deflfp receive_msg(%Secom.Event{type: :updater, value: _val}) do 
+  defp receive_msg(%FireAlarm.Event{type: :updater, value: _val}) do 
     Python.call(:"sense.set_pixel", [3, 3, 255, 255, 255])
   end
 
   # スプリンクラー停止ボタン
   # 火事なのに止めちゃうと取り返しがつかない
-  deflfp receive_msg(%Secom.Event{type: :stop_button, value: true}) do
+  defp receive_msg(%FireAlarm.Event{type: :stop_button, value: true}) do
     cast_activate_group(:actor, %{:status => :normal})
   end
 
-  deflfp receive_msg(%Secom.Event{type: :stop_button, value: false}) do
+  defp receive_msg(%FireAlarm.Event{type: :stop_button, value: false}) do
     # 何もしない
   end
 
   # default method
-  deflfp receive_msg(msg) do
+  defp receive_msg(msg) do
     IO.puts "there is no function for the following message:#{inspect msg}"
   end
 end

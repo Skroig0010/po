@@ -1,4 +1,4 @@
-defmodule Secom.Actuator.Sprinkler do
+defmodule FireAlarm.Actuator.Sprinkler do
   use ContextEX
   @sprinkler :sprinkler_pid
 

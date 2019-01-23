@@ -35,11 +35,11 @@ defmodule GreenHouse.Actor do
     if(val < 5) do
       cast_activate_group(:sink, %{id => :cold})
       # ヒーターあるなら付ける
-      cast_activate_layer(%{:state => :cold})
+      cast_activate_layer(%{:temperature => :cold})
     else
       cast_activate_group(:sink, %{id => :normal})
       # ヒーターあるなら消す
-      cast_activate_layer(%{:state => :normal})
+      cast_activate_layer(%{:temperature => :normal})
     end
   end
 
@@ -47,7 +47,7 @@ defmodule GreenHouse.Actor do
   deflfp receive_msg(id, %GreenHouse.Event{type: :thermometer, value: val}) when val > 28 do
     if(val > 30) do
       # 30℃を超えたら全ての窓を開ける
-      cast_activate_group(:actor, %{:state => :hot})
+      cast_activate_group(:actor, %{:temperature => :hot})
     end
     cast_activate_group(:sink, %{id => :hot})
   end
@@ -55,7 +55,7 @@ defmodule GreenHouse.Actor do
   deflfp receive_msg(id, %GreenHouse.Event{type: :thermometer, value: val}) do
     if(val < 25) do
       # 25℃未満なら全ての窓を閉める
-      cast_activate_group(:actor, %{:state => :normal})
+      cast_activate_group(:actor, %{:temperature => :normal})
     end
     cast_activate_group(:sink, %{id => :normal})
   end

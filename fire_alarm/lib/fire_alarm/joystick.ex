@@ -1,4 +1,4 @@
-defmodule Secom.Joystick do
+defmodule FireAlarm.Joystick do
   @joystick :joystick_agent
 
   @type direction :: {up :: boolean, down :: boolean, left :: boolean, right :: boolean}
