@@ -22,13 +22,13 @@ defmodule ReportingDevice.Actor do
   end
 
   # human sensor
-  deflfp receive_msg(%ReportingDevice.Event{type: :human, value: val}), %{:time => time} when val == true and (time > 23 or time < 5) do
+  deflfp receive_msg(%ReportingDevice.Event{type: :human, value: true}), %{:time => time} when (time > 23 or time < 5) do
     Python.call(:"sense.set_pixel", [0, 3, 255, 255, 255])
     cast_activate_group(:sink, %{:suspicious_person => true})
     cast_activate_layer(%{:suspicious_person => true})
   end
 
-  deflfp receive_msg(%ReportingDevice.Event{type: :human, value: _}), %{:suspicious_person => true} do
+  deflfp receive_msg(%ReportingDevice.Event{type: :human, value: false}), %{:suspicious_person => true} do
     Python.call(:"sense.set_pixel", [0, 3, 0, 0, 0])
     cast_activate_group(:sink, %{:suspicious_person => false})
     cast_activate_layer(%{:suspicious_person => false})
