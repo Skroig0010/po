@@ -5,31 +5,31 @@ defmodule GreenHouse.Actuator.Heater do
   def start() do
     IO.puts "start heater"
     Process.register(self(), @heater)
-    loop(:off)
+    loop()
   end
 
-  deflf update(), %{:temperature => :cold} do
+  deflf update(), %{:temperature => :cold, :heater => :deactuated} do
+    cast_activate_layer(%{:heater => :actuated})
     send Process.whereis(@heater), :on
   end
 
-  deflf update() do
+  deflf update(), %{:temperature => temperature, :heater => :actuated} when temperature != :cold do
+    cast_activate_layer(%{:heater => :deactuated})
     send Process.whereis(@heater), :off
   end
 
-  def loop(switch) do
-    loop(receive do
+  deflf update() do
+  end
+
+  def loop() do
+    receive do
       :on -> 
-        if(switch !== :on) do
-          IO.puts "heater activated"
-        end
+        IO.puts "heater activated"
         Python.call(:"sense.set_pixel", [7, 0, 255, 0, 0])
-        :on
       :off -> 
-        if(switch !== :off) do
-          IO.puts "heater deactivated"
-        end
+        IO.puts "heater deactivated"
         Python.call(:"sense.set_pixel", [7, 0, 0, 0, 0])
-        :off
-    end)
+    end
+    loop()
   end
 end

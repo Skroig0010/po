@@ -5,32 +5,32 @@ defmodule GreenHouse.Actuator.FanSystem do
   def start() do
     IO.puts "start fan system"
     Process.register(self(), @fan_system)
-    loop(:off)
+    loop()
   end
 
   # 温度差がある場合はファンを回す
-  deflf update(), %{:temperature_diff => true} do
+  deflf update(), %{:temperature_diff => true, :fan_system => :deactuated} do
+    cast_activate_layer(%{:fan_system => :actuated})
     send Process.whereis(@fan_system), :on
   end
 
-  deflf update() do
+  deflf update(), %{:temperature_diff => false, :fan_system => :actuated} do
+    cast_activate_layer(%{:fan_system => :deactuated})
     send Process.whereis(@fan_system), :off
   end
 
-  def loop(switch) do
-    loop(receive do
+  deflf update() do
+  end
+
+  def loop() do
+    receive do
       :on -> 
-        if(switch !== :on) do
-          IO.puts "fan system activated"
-        end
+        IO.puts "fan system activated"
         Python.call(:"sense.set_pixel", [0, 0, 0, 0, 255])
-        :on
       :off -> 
-        if(switch !== :off) do
-          IO.puts "fan system deactivated"
-        end
+        IO.puts "fan system deactivated"
         Python.call(:"sense.set_pixel", [0, 0, 0, 0, 0])
-        :off
-    end)
+    end
+    loop()
   end
 end

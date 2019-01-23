@@ -10,6 +10,7 @@ defmodule FireAlarm.Actor do
     Python.init()
     FireAlarm.Joystick.init()
     init_context([:actor, get_floor_atom(floor)])
+    cast_activate_layer(%{:shutter => :deactuated, :sprinkler => :deactuated})
     loop(floor)
   end
 

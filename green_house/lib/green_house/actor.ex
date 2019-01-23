@@ -4,6 +4,7 @@ defmodule GreenHouse.Actor do
   def start(id) do
     Python.init()
     init_context([:actor, id])
+    cast_activate_layer(%{:fan_system => :deactuated, :heater => :deactuated, :humidifier => :deactuated, :sprinkler => :deactuated, :window => :deactuated})
     loop(id)
   end
 
