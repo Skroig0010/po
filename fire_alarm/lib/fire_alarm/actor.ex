@@ -15,7 +15,8 @@ defmodule FireAlarm.Actor do
   end
 
   deflf loop(floor), %{:temperature => :high, :smoke => true, :status => status} when status !== :emergency do
-    cast_activate_group(get_floor_atom(floor), %{:status => :emergency})
+    call_activate_group(:actor, %{:status => :emergency})
+    cast_activate_group(get_floor_atom(floor), %{:status => :extinguishing})
     loop(floor)
   end
 

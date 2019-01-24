@@ -8,7 +8,7 @@ defmodule FireAlarm.Actuator.Sprinkler do
     loop()
   end
 
-  deflf update(), %{:status => :emergency, :sprinkler => :deactuated} do
+  deflf update(), %{:status => :extinguishing, :sprinkler => :deactuated} do
     cast_activate_layer(%{:sprinkler => :actuated})
     send Process.whereis(@sprinkler), :on
   end

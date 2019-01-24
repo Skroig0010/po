@@ -8,7 +8,7 @@ defmodule FireAlarm.Actuator.Shutter do
     loop()
   end
 
-  deflf update(), %{:status => :emergency, :shutter => :deactuated} do
+  deflf update(), %{:status => :extinguishing, :shutter => :deactuated} do
     cast_activate_layer(%{:shutter => :actuated})
     send Process.whereis(@shutter), :on
   end
